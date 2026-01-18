@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
 import { getFirestore, collection, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-// SUAS CONFIGURAÇÕES (Não precisa mexer)
+// SUAS CONFIGURAÇÕES
 const firebaseConfig = {
   apiKey: "AIzaSyACBB_r8sPsXaIy7L9k2CkMd2rwk3wUrYc",
   authDomain: "rifa-7c72f.firebaseapp.com",
@@ -17,6 +17,16 @@ const db = getFirestore(app);
 const totalNumeros = 150; 
 const grid = document.getElementById('grid-rifa');
 let numeroAtual = null;
+
+// --- NOVO: MÁSCARA DE TELEFONE (WHATSAPP) ---
+// Isso faz o (11) 99999-9999 aparecer sozinho enquanto digita
+const inputTelefone = document.getElementById('telefone');
+if(inputTelefone) {
+    inputTelefone.addEventListener('input', function (e) {
+        let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+        e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+    });
+}
 
 // --- FUNÇÕES VISUAIS ---
 window.fecharModais = () => {
@@ -57,31 +67,29 @@ onSnapshot(collection(db, "rifa"), (snapshot) => {
     snapshot.forEach((doc) => {
         const dados = doc.data();
         const el = document.getElementById(`num-${doc.id}`);
-        if (el && dados.status !== 'livre') { // Só muda se não for livre
+        if (el && dados.status !== 'livre') { 
             el.classList.remove('livre', 'reservado', 'pago');
             el.classList.add(dados.status);
         } else if (el && dados.status === 'livre') {
-             // Caso o admin libere, volta a ser verde
              el.classList.remove('reservado', 'pago');
              el.classList.add('livre');
         }
     });
-    
-    // Varredura extra para limpar números deletados (caso você delete no admin)
-    // (Simplificado: Se o doc for deletado, ele não aparece no snapshot.forEach padrão
-    // mas para manter simples, o admin vai mudar o status para 'livre' em vez de deletar)
 });
 
 window.abrirModal = (n) => {
     const el = document.getElementById(`num-${n}`);
     if (el.classList.contains('reservado') || el.classList.contains('pago')) {
-        // Se quiser um aviso personalizado aqui também, me avise.
-        // Por enquanto, alert é o menos intrusivo para erro rápido.
         alert("Este número já foi escolhido!"); 
         return;
     }
     numeroAtual = n;
     document.getElementById('num-selecionado').innerText = n.toString().padStart(3, '0');
+    
+    // Limpa os campos ao abrir
+    document.getElementById('nome').value = '';
+    document.getElementById('telefone').value = '';
+    
     document.getElementById('modal').style.display = "block";
 }
 
@@ -90,8 +98,8 @@ window.confirmarReserva = async () => {
     const telefone = document.getElementById('telefone').value;
     const botao = document.querySelector('#modal button');
 
-    if (!nome || !telefone) {
-        alert("Preencha seu nome e WhatsApp!");
+    if (!nome || telefone.length < 14) { // Validação básica do tamanho do telefone
+        alert("Por favor, preencha seu nome e o WhatsApp corretamente!");
         return;
     }
 
@@ -106,12 +114,7 @@ window.confirmarReserva = async () => {
             data: new Date().toISOString()
         });
         
-        // AQUI ESTÁ A MUDANÇA: Chama o modal bonito em vez do alert
         abrirModalSucesso(numeroAtual);
-        
-        // Limpa formulário
-        document.getElementById('nome').value = '';
-        document.getElementById('telefone').value = '';
 
     } catch (e) {
         console.error(e);
