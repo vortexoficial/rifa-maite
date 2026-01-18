@@ -18,26 +18,41 @@ const totalNumeros = 150;
 const grid = document.getElementById('grid-rifa');
 let numeroAtual = null;
 
-// --- NOVO: MÁSCARA DE TELEFONE (WHATSAPP) ---
-// Isso faz o (11) 99999-9999 aparecer sozinho enquanto digita
+// --- MÁSCARA DE TELEFONE (WHATSAPP) ---
 const inputTelefone = document.getElementById('telefone');
 if(inputTelefone) {
     inputTelefone.addEventListener('input', function (e) {
-        let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
-        e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+        // Remove tudo que não é dígito
+        let x = e.target.value.replace(/\D/g, '');
+        // Limita a 11 dígitos (DDD + 9 dígitos)
+        x = x.substring(0, 11);
+        
+        // Aplica a máscara (XX) XXXXX-XXXX ou (XX) XXXX-XXXX
+        if (x.length > 10) {
+             e.target.value = x.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+        } else if (x.length > 6) {
+             e.target.value = x.replace(/^(\d{2})(\d{4})(\d{0,4})$/, '($1) $2-$3');
+        } else if (x.length > 2) {
+             e.target.value = x.replace(/^(\d{2})(\d{0,5})$/, '($1) $2');
+        } else {
+             e.target.value = x;
+        }
     });
 }
 
 // --- FUNÇÕES VISUAIS ---
 window.fecharModais = () => {
-    document.getElementById('modal').style.display = 'none';
-    document.getElementById('modal-sucesso').style.display = 'none';
+    const modal = document.getElementById('modal');
+    const modalSucesso = document.getElementById('modal-sucesso');
+    if(modal) modal.style.display = 'none';
+    if(modalSucesso) modalSucesso.style.display = 'none';
 }
 
 function abrirModalSucesso(numero) {
-    document.getElementById('modal').style.display = 'none'; // fecha o de compra
+    fecharModais(); // Garante que o de compra fecha
     document.getElementById('sucesso-numero').innerText = numero;
-    document.getElementById('modal-sucesso').style.display = 'block'; // abre o bonito
+    // Usa flex para centralizar
+    document.getElementById('modal-sucesso').style.display = 'flex'; 
 }
 
 window.onclick = (event) => {
@@ -52,11 +67,8 @@ function criarGrid() {
         const div = document.createElement('div');
         div.classList.add('numero');
         div.id = `num-${i}`;
-        
-        // Formata número (001, 002...)
         let numFormatado = i.toString().padStart(3, '0');
         div.textContent = numFormatado;
-        
         div.onclick = () => abrirModal(i);
         grid.appendChild(div);
     }
@@ -90,7 +102,8 @@ window.abrirModal = (n) => {
     document.getElementById('nome').value = '';
     document.getElementById('telefone').value = '';
     
-    document.getElementById('modal').style.display = "block";
+    // Usa flex para centralizar
+    document.getElementById('modal').style.display = "flex"; 
 }
 
 window.confirmarReserva = async () => {
@@ -98,8 +111,9 @@ window.confirmarReserva = async () => {
     const telefone = document.getElementById('telefone').value;
     const botao = document.querySelector('#modal button');
 
-    if (!nome || telefone.length < 14) { // Validação básica do tamanho do telefone
-        alert("Por favor, preencha seu nome e o WhatsApp corretamente!");
+    // Validação simples: nome preenchido e telefone com pelo menos 14 caracteres, ex: (11) 99999-9999
+    if (!nome || telefone.length < 14) { 
+        alert("Por favor, preencha seu nome e o WhatsApp corretamente (com DDD)!");
         return;
     }
 
