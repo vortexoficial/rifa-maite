@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rifa do Nicollas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>💙 Rifa para o Tratamento do Nicollas</h1>
+        
+        <div class="foto-container">
+            <img src="image.png"  alt="Foto do Nicollas" class="foto-nicollas">
+        </div>
+
+        <p class="descricao-principal">
+            Ajudem o Nicollas! Cada número custa apenas <strong>R$ 10,00</strong>.
+        </p>
+        <p class="regra-sorteio">
+            📢 O sorteio será realizado assim que todos os <strong>150 números</strong> forem vendidos!
+        </p>
+        
+        <div class="legenda">
+            <span class="tag livre">Livre</span>
+            <span class="tag reservado">Reservado</span>
+            <span class="tag pago">Pago</span>
+        </div>
+
+        <div id="grid-rifa" class="grid-rifa">
+            </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Reservar número <span id="num-selecionado" style="color: #007bff;"></span></h2>
+            
+            <p class="valor-destaque">Valor: R$ 10,00</p>
+            <p>Para garantir, faça o PIX e envie o comprovante.</p>
+            
+            <div class="pix-area">
+                <strong>Chave PIX:</strong><br>
+                000.000.000-00 (Seu CPF/Email)
+            </div>
+            
+            <input type="text" id="nome" placeholder="Seu Nome Completo (Obrigatório)">
+            <input type="tel" id="telefone" placeholder="Seu WhatsApp (Obrigatório)">
+            <button onclick="confirmarReserva()">Confirmar Reserva</button>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
