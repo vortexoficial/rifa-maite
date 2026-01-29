@@ -20,6 +20,21 @@
         </div>
     </div>
 
+    <div id="tela-sorteio" class="overlay-sorteio">
+        <div class="conteudo-sorteio">
+            <h2 class="titulo-sorteio">
+                <span class="material-icons-round icon-spin">celebration</span> 
+                HORA DO SORTEIO 
+                <span class="material-icons-round icon-spin-reverse">celebration</span>
+            </h2>
+            <div class="roleta-container">
+                <span id="numero-sorteado">000</span>
+            </div>
+            <p id="mensagem-ganhador" class="msg-ganhador"></p>
+            <div id="confetes"></div>
+        </div>
+    </div>
+
     <div class="container main-content">
         <header>
             <h1 class="titulo-principal">Chá Rifa da Isis Maitê</h1>
@@ -37,6 +52,28 @@
             <hr>
             <p><span class="material-icons-round icon-purple">event</span> <strong>Sorteio:</strong> 20/04/2026</p>
             <p style="font-size: 0.9em; color: #666; margin-left: 28px;">Entrega das fraldas até: 15/04/2026</p>
+        </div>
+
+        <div class="countdown-box">
+            <p class="countdown-label">Faltam apenas:</p>
+            <div id="countdown" class="countdown-grid">
+                <div class="time-block">
+                    <span id="dias" class="time-number">00</span>
+                    <span class="time-text">Dias</span>
+                </div>
+                <div class="time-block">
+                    <span id="horas" class="time-number">00</span>
+                    <span class="time-text">Horas</span>
+                </div>
+                <div class="time-block">
+                    <span id="minutos" class="time-number">00</span>
+                    <span class="time-text">Min</span>
+                </div>
+                <div class="time-block">
+                    <span id="segundos" class="time-number">00</span>
+                    <span class="time-text">Seg</span>
+                </div>
+            </div>
         </div>
         
         <div class="legenda">
@@ -98,9 +135,7 @@
                 <span class="material-icons-round icon-purple pulse-animation" style="font-size: 4rem;">check_circle</span>
             </div>
             <h2>Reserva Realizada!</h2>
-            
             <p id="mensagem-sucesso" style="font-size: 1.1em; color: #444; margin: 20px 0; line-height: 1.5;"></p>
-            
             <button onclick="fecharModais()" class="btn-confirmar">Combinado!</button>
         </div>
     </div>
@@ -114,7 +149,37 @@
                     setTimeout(() => { loader.style.display = 'none'; }, 500);
                 }
             }, 1500); 
+            
+            // INICIAR CONTAGEM REGRESSIVA
+            iniciarContagem();
         };
+
+        // --- LÓGICA CONTAGEM REGRESSIVA ---
+        function iniciarContagem() {
+            // Data do Sorteio: 20 de Abril de 2026
+            const dataSorteio = new Date("2026-04-20T00:00:00").getTime();
+
+            const x = setInterval(function() {
+                const agora = new Date().getTime();
+                const distancia = dataSorteio - agora;
+
+                if (distancia < 0) {
+                    clearInterval(x);
+                    document.querySelector('.countdown-box').innerHTML = "<h3 style='color:var(--cor-roxo-escuro)'>O grande dia chegou! 🎉</h3>";
+                    return;
+                }
+
+                const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+                const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+                const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+                document.getElementById("dias").innerText = dias.toString().padStart(2, '0');
+                document.getElementById("horas").innerText = horas.toString().padStart(2, '0');
+                document.getElementById("minutos").innerText = minutos.toString().padStart(2, '0');
+                document.getElementById("segundos").innerText = segundos.toString().padStart(2, '0');
+            }, 1000);
+        }
 
         window.copiarPix = function() {
             const chave = "12988570943";
@@ -124,11 +189,7 @@
             navigator.clipboard.writeText(chave).then(() => {
                 texto.innerText = "Chave Copiada!";
                 btn.style.backgroundColor = "#2ecc71"; 
-                
-                setTimeout(() => {
-                    texto.innerText = "Copiar código pix";
-                    btn.style.backgroundColor = ""; 
-                }, 2000);
+                setTimeout(() => { texto.innerText = "Copiar código pix"; btn.style.backgroundColor = ""; }, 2000);
             }).catch(() => alert("Copie manualmente: " + chave));
         }
     </script>

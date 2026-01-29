@@ -16,20 +16,10 @@ const db = getFirestore(app);
 let numeroAtual = null;
 
 const iconStar = '<span class="material-icons-round" style="font-size: 1.3em;">star_rate</span>';
-
 const blocos = [
-    { 
-        inicio: 1, fim: 20, 
-        titulo: `<span class="star-wrapper">${iconStar}</span> Fralda P + Mimo (01 ao 20)` 
-    },
-    { 
-        inicio: 21, fim: 90, 
-        titulo: `<span class="star-wrapper">${iconStar}${iconStar}</span> Fralda M + Mimo (21 ao 90)` 
-    },
-    { 
-        inicio: 91, fim: 120, 
-        titulo: `<span class="star-wrapper">${iconStar}${iconStar}${iconStar}</span> Fralda G + Mimo (91 ao 120)` 
-    }
+    { inicio: 1, fim: 20, titulo: `<span class="star-wrapper">${iconStar}</span> Fralda P + Mimo (01 ao 20)` },
+    { inicio: 21, fim: 90, titulo: `<span class="star-wrapper">${iconStar}${iconStar}</span> Fralda M + Mimo (21 ao 90)` },
+    { inicio: 91, fim: 120, titulo: `<span class="star-wrapper">${iconStar}${iconStar}${iconStar}</span> Fralda G + Mimo (91 ao 120)` }
 ];
 
 const inputTelefone = document.getElementById('telefone');
@@ -50,14 +40,11 @@ window.fecharModais = () => {
 
 function abrirModalSucesso(numero) {
     fecharModais();
-    
-    // Calcula o tamanho da fralda novamente para exibir na mensagem final
     let tamanhoFralda = "";
     if (numero <= 20) tamanhoFralda = "tamanho P";
     else if (numero <= 90) tamanhoFralda = "tamanho M";
     else tamanhoFralda = "tamanho G";
 
-    // Monta a mensagem personalizada solicitada
     const mensagem = `Parabéns você reservou o número <strong>${numero.toString().padStart(3, '0')}</strong>, realize o pagamento via pix e envie o comprovante via whatsapp ou entregue o pacote de fraldas <strong>${tamanhoFralda}</strong> até o dia 15 de Abril!`;
 
     document.getElementById('mensagem-sucesso').innerHTML = mensagem;
@@ -78,10 +65,8 @@ function criarGrid() {
         titulo.className = 'titulo-secao';
         titulo.innerHTML = bloco.titulo;
         containerPrincipal.appendChild(titulo);
-
         const gridDiv = document.createElement('div');
         gridDiv.className = 'grid-rifa';
-
         for (let i = bloco.inicio; i <= bloco.fim; i++) {
             const div = document.createElement('div');
             div.classList.add('numero');
@@ -90,7 +75,6 @@ function criarGrid() {
             div.onclick = () => abrirModal(i);
             gridDiv.appendChild(div);
         }
-        
         containerPrincipal.appendChild(gridDiv);
     });
 }
@@ -118,15 +102,12 @@ window.abrirModal = (n) => {
         return;
     }
     numeroAtual = n;
-    
     let textoFralda = "";
     if (n <= 20) textoFralda = "Fralda P + Mimo";
     else if (n <= 90) textoFralda = "Fralda M + Mimo";
     else textoFralda = "Fralda G + Mimo";
-    
     document.getElementById('tipo-fralda').innerText = textoFralda;
     document.getElementById('num-selecionado').innerText = n.toString().padStart(3, '0');
-    
     document.getElementById('nome').value = '';
     document.getElementById('telefone').value = '';
     document.getElementById('modal').style.display = "flex"; 
@@ -136,15 +117,12 @@ window.confirmarReserva = async () => {
     const nome = document.getElementById('nome').value;
     const telefone = document.getElementById('telefone').value;
     const botao = document.querySelector('#modal .btn-confirmar');
-
     if (!nome || telefone.length < 14) { 
         alert("Preencha seu nome e WhatsApp corretamente!");
         return;
     }
-
     botao.disabled = true;
     botao.innerHTML = '<span class="material-icons-round animation-spin">sync</span> Aguarde...';
-
     try {
         await setDoc(doc(db, "rifa", String(numeroAtual)), {
             nome: nome,
@@ -159,6 +137,55 @@ window.confirmarReserva = async () => {
     } finally {
         botao.disabled = false;
         botao.innerText = "Confirmar Reserva";
+    }
+}
+
+// --- LÓGICA DO SORTEIO (ANIMAÇÃO) ---
+onSnapshot(doc(db, "config_sorteio", "resultado"), (docSnap) => {
+    if (docSnap.exists()) {
+        const dados = docSnap.data();
+        const overlay = document.getElementById('tela-sorteio');
+        const numElemento = document.getElementById('numero-sorteado');
+        const msgElemento = document.getElementById('mensagem-ganhador');
+        
+        if (dados.ganhador && dados.status === 'ativo') {
+            fecharModais();
+            overlay.style.display = 'flex';
+            msgElemento.style.opacity = '0';
+            
+            let contador = 0;
+            const intervalo = setInterval(() => {
+                const random = Math.floor(Math.random() * 120) + 1;
+                numElemento.innerText = random.toString().padStart(3, '0');
+                contador++;
+                
+                if(contador > 40) {
+                    clearInterval(intervalo);
+                    numElemento.innerText = dados.ganhador.toString().padStart(3, '0');
+                    msgElemento.innerText = `Parabéns ${dados.nomeGanhador || ''}!`;
+                    msgElemento.style.opacity = '1';
+                    soltarConfetes();
+                }
+            }, 80);
+            
+        } else {
+            overlay.style.display = 'none';
+        }
+    }
+});
+
+function soltarConfetes() {
+    const cores = ['#FFD700', '#FFFFFF', '#DCD0FF', '#4B0082'];
+    const container = document.getElementById('confetes');
+    container.innerHTML = '';
+    
+    for(let i=0; i<50; i++) {
+        const confete = document.createElement('div');
+        confete.classList.add('confete');
+        confete.style.left = Math.random() * 100 + 'vw';
+        confete.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        confete.style.backgroundColor = cores[Math.floor(Math.random() * cores.length)];
+        container.appendChild(confete);
     }
 }
 
