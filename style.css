@@ -16,13 +16,10 @@ body {
 }
 
 /* --- ÍCONES GERAIS --- */
-/* Classe padrão do Google Fonts */
 .material-icons-round {
-    vertical-align: middle; /* Alinha o ícone com o texto */
+    vertical-align: middle;
     user-select: none;
 }
-
-/* Cores para ícones */
 .icon-purple { color: var(--cor-roxo-escuro); }
 .icon-light-purple { color: var(--cor-roxo-medio); }
 
@@ -38,16 +35,15 @@ body {
 .loader-top { font-size: 1.2rem; letter-spacing: 3px; color: var(--cor-roxo-medio); margin-bottom: -5px;}
 .loader-bottom { font-size: 2.5rem; font-weight: 800; color: var(--cor-roxo-escuro); text-transform: uppercase; }
 
-/* Nova estrutura do ícone do loader */
 .loader-icon-container {
     margin: 15px 0;
     animation: pulse 1.2s infinite ease-in-out;
 }
 .loader-icon-container .material-icons-round {
-    font-size: 4rem; /* Tamanho grande pro loader */
-    color: var(--cor-roxo-escuro);
-    /* Adiciona um brilho suave roxo */
-    filter: drop-shadow(0 0 10px rgba(75, 0, 130, 0.3));
+    font-size: 4rem;
+    /* ALTERAÇÃO: Cor Lilás Bebê Claro */
+    color: var(--cor-lilas-bebe); 
+    filter: drop-shadow(0 0 5px rgba(220, 208, 255, 0.8)); /* Brilho suave lilás */
 }
 
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
@@ -73,7 +69,7 @@ body {
 .info-box {
     background-color: #FAFAFF; border: 2px dashed var(--cor-lilas-bebe);
     padding: 15px; border-radius: 15px; margin-bottom: 20px;
-    text-align: left; /* Alinha texto com ícones à esquerda */
+    text-align: left;
 }
 .info-box h3 { display: flex; align-items: center; gap: 8px; margin-top: 0; color: var(--cor-roxo-escuro); }
 .info-box p { display: flex; align-items: center; gap: 8px; margin: 10px 0; }
@@ -86,11 +82,13 @@ body {
 .reservado { background-color: var(--cor-reservado); color: #555; }
 .pago { background-color: var(--cor-roxo-escuro); color: white; }
 
+/* TÍTULOS DAS SEÇÕES */
 .titulo-secao {
     color: var(--cor-roxo-escuro); background-color: #F3F0FF;
     padding: 12px; border-radius: 12px; margin-top: 30px; margin-bottom: 15px;
     font-size: 1.1em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-    display: flex; align-items: center; justify-content: center; gap: 8px; /* Para alinhar o ícone no título */
+    /* Configuração Flexbox Padrão (Desktop: Lado a Lado) */
+    display: flex; align-items: center; justify-content: center; gap: 10px; 
 }
 
 .grid-rifa {
@@ -144,3 +142,18 @@ button:hover { transform: scale(1.02); background-color: #3a0066;}
 
 .pulse-icon-container { margin-bottom: 15px; }
 .pulse-animation { animation: pulse 1.5s infinite; }
+
+/* --- AJUSTE MOBILE PARA ESTRELAS ACIMA --- */
+@media (max-width: 500px) {
+    .titulo-secao {
+        flex-direction: column; /* Coloca um em cima do outro */
+        text-align: center;
+        gap: 5px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+    .star-wrapper {
+        margin-bottom: 2px; /* Espaço entre estrelas e texto */
+        display: block;
+    }
+}

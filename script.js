@@ -15,14 +15,23 @@ const db = getFirestore(app);
 
 let numeroAtual = null;
 
-// Ícones modernos para os títulos (usando estrelas para representar os tamanhos)
+// Ícone de estrela
 const iconStar = '<span class="material-icons-round" style="font-size: 1.3em;">star_rate</span>';
 
-// DEFINIÇÃO DOS BLOCOS COM ÍCONES MODERNOS NA STRING HTML
+// DEFINIÇÃO DOS BLOCOS (Com wrapper 'star-wrapper' para ajuste no mobile)
 const blocos = [
-    { inicio: 1, fim: 20, titulo: `${iconStar} Fralda P + Mimo (01 ao 20)` },
-    { inicio: 21, fim: 90, titulo: `${iconStar}${iconStar} Fralda M + Mimo (21 ao 90)` },
-    { inicio: 91, fim: 120, titulo: `${iconStar}${iconStar}${iconStar} Fralda G + Mimo (91 ao 120)` }
+    { 
+        inicio: 1, fim: 20, 
+        titulo: `<span class="star-wrapper">${iconStar}</span> Fralda P + Mimo (01 ao 20)` 
+    },
+    { 
+        inicio: 21, fim: 90, 
+        titulo: `<span class="star-wrapper">${iconStar}${iconStar}</span> Fralda M + Mimo (21 ao 90)` 
+    },
+    { 
+        inicio: 91, fim: 120, 
+        titulo: `<span class="star-wrapper">${iconStar}${iconStar}${iconStar}</span> Fralda G + Mimo (91 ao 120)` 
+    }
 ];
 
 // --- MÁSCARA WHATSAPP ---
@@ -60,13 +69,13 @@ function criarGrid() {
     containerPrincipal.innerHTML = ''; 
 
     blocos.forEach(bloco => {
-        // 1. Cria o Título da Seção (usando innerHTML para renderizar os ícones)
+        // Cria Título
         const titulo = document.createElement('h3');
         titulo.className = 'titulo-secao';
-        titulo.innerHTML = bloco.titulo; // innerHTML permite as tags dos ícones
+        titulo.innerHTML = bloco.titulo; // Renderiza o HTML com o wrapper
         containerPrincipal.appendChild(titulo);
 
-        // 2. Cria o Grid desta seção
+        // Cria Grid
         const gridDiv = document.createElement('div');
         gridDiv.className = 'grid-rifa';
 
@@ -132,7 +141,6 @@ window.confirmarReserva = async () => {
     }
 
     botao.disabled = true;
-    // Ícone de loading no botão
     botao.innerHTML = '<span class="material-icons-round animation-spin">sync</span> Aguarde...';
 
     try {
