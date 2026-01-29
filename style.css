@@ -15,12 +15,11 @@ body {
     text-align: center; color: var(--cor-preto);
 }
 
-/* --- ÍCONES GERAIS --- */
+/* ÍCONES E LOADER */
 .material-icons-round { vertical-align: middle; user-select: none; }
 .icon-purple { color: var(--cor-roxo-escuro); }
 .icon-light-purple { color: var(--cor-roxo-medio); }
 
-/* --- LOADER --- */
 #loader {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background-color: var(--cor-branco); z-index: 9999;
@@ -30,32 +29,27 @@ body {
 .loader-content { display: flex; flex-direction: column; align-items: center; }
 .loader-top { font-size: 1.2rem; letter-spacing: 3px; color: var(--cor-roxo-medio); margin-bottom: -5px;}
 .loader-bottom { font-size: 2.5rem; font-weight: 800; color: var(--cor-roxo-escuro); text-transform: uppercase; }
-
 .loader-icon-container { margin: 15px 0; animation: pulse 1.2s infinite ease-in-out; }
 .loader-icon-container .material-icons-round {
-    font-size: 4rem;
-    color: var(--cor-lilas-bebe); /* Cor alterada para Lilás Bebe */
+    font-size: 4rem; color: var(--cor-lilas-bebe); 
     filter: drop-shadow(0 0 5px rgba(220, 208, 255, 0.8));
 }
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
 
-/* --- LAYOUT --- */
+/* LAYOUT GERAL */
 .container {
     max-width: 600px; margin: 20px auto; background: var(--cor-branco);
     padding: 30px 20px; border-radius: 25px;
     box-shadow: 0 10px 30px rgba(75, 0, 130, 0.1);
 }
-
 .titulo-principal { color: var(--cor-roxo-escuro); font-weight: 800; margin-bottom: 5px; }
 .subtitulo { color: var(--cor-roxo-medio); margin-top: 0; font-weight: 300; }
-
 .foto-container { margin: 20px auto; }
 .foto-destaque {
     width: 100%; max-width: 300px; height: auto;
     border-radius: 50%; border: 5px solid var(--cor-lilas-bebe);
     padding: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
-
 .info-box {
     background-color: #FAFAFF; border: 2px dashed var(--cor-lilas-bebe);
     padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: left;
@@ -63,7 +57,6 @@ body {
 .info-box h3 { display: flex; align-items: center; gap: 8px; margin-top: 0; color: var(--cor-roxo-escuro); }
 .info-box p { display: flex; align-items: center; gap: 8px; margin: 10px 0; }
 
-/* LEGENDA e GRID */
 .legenda { margin: 20px 0; display: flex; justify-content: center; gap: 10px; }
 .tag { padding: 5px 15px; border-radius: 20px; font-size: 0.8em; font-weight: 600; }
 .livre { background-color: var(--cor-lilas-bebe); color: var(--cor-roxo-escuro); }
@@ -76,7 +69,6 @@ body {
     font-size: 1.1em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
     display: flex; align-items: center; justify-content: center; gap: 10px; 
 }
-
 .grid-rifa {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
     gap: 10px; padding: 5px; margin-bottom: 10px;
@@ -90,65 +82,93 @@ body {
 .numero.reservado { background-color: var(--cor-reservado); color: #444; }
 .numero.pago { background-color: var(--cor-roxo-escuro); color: white; opacity: 0.9; cursor: default;}
 
-/* --- MODAIS --- */
+/* --- MODAL ESTILO UNNAMED.PNG --- */
 .modal {
     display: none; position: fixed; z-index: 1000; left: 0; top: 0; 
     width: 100%; height: 100%; background-color: rgba(75, 0, 130, 0.5); 
     backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;
 }
 .modal-content {
-    background-color: #fff; padding: 30px; border-radius: 25px;
+    background-color: #fff; padding: 25px; border-radius: 25px;
     width: 100%; max-width: 380px; position: relative; 
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3); border: 4px solid var(--cor-lilas-bebe);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3); border: 5px solid #DCD0FF; /* Borda grossa lilás claro opcional */
     animation: subir 0.3s ease-out;
+    text-align: center;
 }
 @keyframes subir { from {transform: translateY(30px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
 
 .close { 
-    position: absolute; right: 20px; top: 15px; 
+    position: absolute; right: 15px; top: 15px; 
     color: var(--cor-roxo-medio); cursor: pointer; 
-    background: #F3F0FF; border-radius: 50%; padding: 5px;
+    background: #F3F0FF; border-radius: 50%; padding: 4px;
     display: flex; align-items: center; justify-content: center; transition: 0.2s;
 }
-.close:hover { background: var(--cor-lilas-bebe); color: var(--cor-roxo-escuro);}
+.close:hover { background: var(--cor-lilas-bebe); }
 
-.titulo-modal { color: var(--cor-roxo-escuro); margin-top: 0;}
-.destaque-fralda { font-size: 1.1em; margin: 15px 0; padding: 15px; background: #F3F0FF; border-radius: 15px; color: #555; text-align: center;}
-
-/* CSS NOVO DO PIX */
-.pix-area { background: #f9f9f9; padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px dashed var(--cor-roxo-medio); color: #333; text-align: left;}
-
-.pix-input-box {
-    display: flex; justify-content: space-between; align-items: center;
-    background-color: #ffffff; border: 2px solid var(--cor-lilas-bebe);
-    border-radius: 12px; padding: 10px 15px; margin-top: 5px;
+.titulo-modal { 
+    color: var(--cor-roxo-escuro); margin-top: 10px; margin-bottom: 20px;
+    font-size: 1.5rem; font-weight: 800;
 }
-#chave-pix-texto { font-size: 1.3em; font-weight: bold; color: var(--cor-preto); user-select: all; }
 
-.btn-copy {
-    background: none; border: none; padding: 5px; margin: 0; width: auto;
-    cursor: pointer; color: var(--cor-roxo-medio); transition: transform 0.2s;
-    display: flex; align-items: center; justify-content: center;
+/* BOX OPÇÕES DE PAGAMENTO (Fundo Lilás) */
+.box-pagamento {
+    background-color: #F8F5FF; /* Lilás bem clarinho */
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex; flex-direction: column; align-items: center;
 }
-.btn-copy:hover { transform: scale(1.2); background-color: transparent; color: var(--cor-roxo-escuro); }
+.texto-pagamento-label { color: #666; font-size: 0.95em; margin-bottom: 5px; }
+.texto-premio { color: var(--cor-roxo-escuro); font-size: 1.2em; font-weight: 800; }
 
-/* Inputs e Botão Confirmar */
-input { width: 100%; padding: 15px; margin: 8px 0; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 16px; background: #fafafa; outline-color: var(--cor-roxo-medio);}
-button { 
+.texto-ou { color: #333; margin: 15px 0; font-size: 0.95em; }
+
+/* BOX PIX (Borda Pontilhada) */
+.box-pix {
+    border: 2px dashed #9370DB; /* Roxo médio pontilhado */
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+.label-pix { 
+    display: flex; justify-content: center; align-items: center; gap: 6px;
+    color: #444; font-size: 0.9em; margin-bottom: 8px;
+}
+.chave-pix-destaque {
+    font-size: 1.6em; font-weight: 800; color: #1A1A1A; margin-bottom: 12px; user-select: all;
+}
+/* Botão Copiar Grande (Roxo) */
+.btn-copiar-grande {
+    background-color: var(--cor-roxo-escuro);
+    color: white; width: 100%; padding: 12px; border-radius: 10px;
+    border: none; font-weight: 600; font-size: 1em; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-top: 0; /* Override */
+    transition: background 0.3s;
+}
+.btn-copiar-grande:hover { background-color: #3a0066; }
+
+/* INPUTS E CONFIRMAR */
+input { 
+    width: 100%; padding: 14px; margin-bottom: 10px; 
+    border: 1px solid #ddd; border-radius: 10px; 
+    box-sizing: border-box; font-size: 15px; background: #fafafa; 
+    outline: none;
+}
+input:focus { border-color: var(--cor-roxo-medio); }
+
+.btn-confirmar {
     background-color: var(--cor-roxo-escuro); color: white; border: none; padding: 16px; 
-    border-radius: 12px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; margin-top: 15px; 
+    border-radius: 12px; cursor: pointer; width: 100%; font-size: 16px; font-weight: 800; margin-top: 10px; 
     transition: transform 0.2s;
 }
-button:hover { transform: scale(1.02); background-color: #3a0066;}
+.btn-confirmar:hover { transform: scale(1.02); }
 
 .pulse-icon-container { margin-bottom: 15px; }
 .pulse-animation { animation: pulse 1.5s infinite; }
 
-/* --- AJUSTE MOBILE PARA ESTRELAS ACIMA --- */
 @media (max-width: 500px) {
-    .titulo-secao {
-        flex-direction: column; text-align: center; gap: 5px;
-        padding-top: 15px; padding-bottom: 15px;
-    }
+    .titulo-secao { flex-direction: column; text-align: center; gap: 5px; padding: 15px; }
     .star-wrapper { margin-bottom: 2px; display: block; }
 }

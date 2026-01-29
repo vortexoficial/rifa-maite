@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chá Rifa da Isis Maitê</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -31,17 +31,11 @@
         </div>
 
         <div class="info-box">
-            <h3>
-                <span class="material-icons-round icon-purple">redeem</span>
-                Prêmios
-            </h3>
+            <h3><span class="material-icons-round icon-purple">redeem</span> Prêmios</h3>
             <p><strong>1º Lugar:</strong> R$ 150,00</p>
             <p><strong>2º Lugar:</strong> R$ 100,00</p>
             <hr>
-            <p>
-                <span class="material-icons-round icon-purple">event</span>
-                <strong>Sorteio:</strong> 20/04/2026
-            </p>
+            <p><span class="material-icons-round icon-purple">event</span> <strong>Sorteio:</strong> 20/04/2026</p>
             <p style="font-size: 0.9em; color: #666; margin-left: 28px;">Entrega das fraldas até: 15/04/2026</p>
         </div>
         
@@ -53,14 +47,10 @@
 
         <div id="rifa-container"></div>
         
-        <footer style="margin-top: 40px; color: #888; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-            <p style="display: flex; align-items: center; gap: 5px;">
-                Feito com carinho 
-                <span class="material-icons-round icon-light-purple" style="font-size: 1.2em;">favorite</span>
-            </p>
-            <a href="admin.html" style="color: #ccc; text-decoration: none; font-size: 0.8em; display: flex; align-items: center; gap: 5px; margin-top: 10px;">
-                <span class="material-icons-round" style="font-size: 1.2em;">settings</span>
-                Área do Admin
+        <footer style="margin-top: 40px; color: #888; display: flex; flex-direction: column; align-items: center;">
+            <p style="display: flex; align-items: center; gap: 5px;">Feito com carinho <span class="material-icons-round icon-light-purple">favorite</span></p>
+            <a href="admin.html" style="color: #ccc; text-decoration: none; font-size: 0.8em; margin-top: 10px; display: flex; align-items: center; gap: 5px;">
+                <span class="material-icons-round">settings</span> Área do Admin
             </a>
         </footer>
     </div>
@@ -70,37 +60,35 @@
             <span class="close" onclick="fecharModais()">
                 <span class="material-icons-round">close</span>
             </span>
+            
             <h2 class="titulo-modal">Número <span id="num-selecionado"></span></h2>
             
-            <div class="info-reserva">
-                <p class="destaque-fralda">
-                    <span class="material-icons-round icon-purple" style="font-size: 1.5em; display: block; margin-bottom: 5px;">child_friendly</span>
-                    Opções de pagamento:<br>
-                    <strong id="tipo-fralda" style="color: var(--cor-roxo-escuro);"></strong>
-                </p>
-                <p>ou <strong>R$ 30,00 no PIX</strong></p>
+            <div class="box-pagamento">
+                <span class="material-icons-round icon-purple" style="font-size: 1.8em; margin-bottom: 5px;">child_friendly</span>
+                <span class="texto-pagamento-label">Opções de pagamento:</span>
+                <strong id="tipo-fralda" class="texto-premio"></strong>
             </div>
-            
-            <div class="pix-area">
-                <small style="display: flex; align-items: center; gap: 5px; margin-bottom: 5px;">
-                    <span class="material-icons-round icon-purple" style="font-size: 1.2em;">pix</span>
+
+            <p class="texto-ou">ou <strong>R$ 30,00 no PIX</strong></p>
+
+            <div class="box-pix">
+                <div class="label-pix">
+                    <span class="material-icons-round icon-purple" style="font-size: 1em;">pix</span>
                     Chave PIX (Celular):
-                </small>
-                
-                <div class="pix-input-box">
-                    <span id="chave-pix-texto">22992846915</span>
-                    <button onclick="copiarPix()" class="btn-copy" title="Copiar Chave">
-                        <span class="material-icons-round" id="icone-copiar">content_copy</span>
-                    </button>
                 </div>
+                
+                <div class="chave-pix-destaque">22992846915</div>
+                
+                <button onclick="copiarPix()" class="btn-copiar-grande" id="btn-copiar">
+                    <span class="material-icons-round">content_copy</span>
+                    <span id="texto-botao-copiar">Copiar código pix</span>
+                </button>
             </div>
             
             <input type="text" id="nome" placeholder="Seu Nome Completo">
             <input type="tel" id="telefone" placeholder="WhatsApp (DDD) 99999-9999" maxlength="15">
             
-            <button onclick="confirmarReserva()" class="btn-confirmar">
-                Confirmar Reserva
-            </button>
+            <button onclick="confirmarReserva()" class="btn-confirmar">Confirmar Reserva</button>
         </div>
     </div>
 
@@ -111,11 +99,8 @@
             </div>
             <h2>Reserva Realizada!</h2>
             <p>O número <span id="sucesso-numero" class="destaque-numero"></span> é seu!</p>
-            <p style="color: #666;">Envie o comprovante ou combine a entrega da fralda pelo WhatsApp.</p>
-            <button onclick="fecharModais()" style="background-color: var(--cor-roxo-escuro); display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <span class="material-icons-round">thumb_up</span>
-                Combinado!
-            </button>
+            <p style="color: #666;">Envie o comprovante no WhatsApp.</p>
+            <button onclick="fecharModais()" style="background-color: var(--cor-roxo-escuro);">Combinado!</button>
         </div>
     </div>
 
@@ -130,22 +115,21 @@
             }, 1500); 
         };
 
-        // LÓGICA DE COPIAR PIX
         window.copiarPix = function() {
             const chave = "22992846915";
-            const icone = document.getElementById('icone-copiar');
+            const btn = document.getElementById('btn-copiar');
+            const texto = document.getElementById('texto-botao-copiar');
             
             navigator.clipboard.writeText(chave).then(() => {
-                icone.innerText = "check_circle"; // Muda ícone para Check
-                icone.style.color = "#2ecc71"; // Verde sucesso
+                // Feedback visual no botão
+                texto.innerText = "Chave Copiada!";
+                btn.style.backgroundColor = "#2ecc71"; // Verde
                 
                 setTimeout(() => {
-                    icone.innerText = "content_copy"; // Volta ícone original
-                    icone.style.color = ""; 
+                    texto.innerText = "Copiar código pix";
+                    btn.style.backgroundColor = ""; // Volta a cor original (roxo)
                 }, 2000);
-            }).catch(err => {
-                alert("Erro ao copiar, copie manualmente: " + chave);
-            });
+            }).catch(() => alert("Copie manualmente: " + chave));
         }
     </script>
 

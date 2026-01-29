@@ -15,10 +15,8 @@ const db = getFirestore(app);
 
 let numeroAtual = null;
 
-// Ícone de estrela
 const iconStar = '<span class="material-icons-round" style="font-size: 1.3em;">star_rate</span>';
 
-// DEFINIÇÃO DOS BLOCOS (Wrapper 'star-wrapper' para CSS mobile)
 const blocos = [
     { 
         inicio: 1, fim: 20, 
@@ -34,7 +32,6 @@ const blocos = [
     }
 ];
 
-// --- MÁSCARA WHATSAPP ---
 const inputTelefone = document.getElementById('telefone');
 if(inputTelefone) {
     inputTelefone.addEventListener('input', function (e) {
@@ -46,7 +43,6 @@ if(inputTelefone) {
     });
 }
 
-// --- MODAIS ---
 window.fecharModais = () => {
     document.getElementById('modal').style.display = 'none';
     document.getElementById('modal-sucesso').style.display = 'none';
@@ -62,7 +58,6 @@ window.onclick = (event) => {
     if (event.target.classList.contains('modal')) window.fecharModais();
 }
 
-// --- CRIAÇÃO DOS GRIDS ---
 function criarGrid() {
     const containerPrincipal = document.getElementById('rifa-container');
     if(!containerPrincipal) return; 
@@ -90,7 +85,6 @@ function criarGrid() {
     });
 }
 
-// Escuta Firebase
 onSnapshot(collection(db, "rifa"), (snapshot) => {
     snapshot.forEach((doc) => {
         const dados = doc.data();
