@@ -78,12 +78,11 @@
             border-radius: 10px;
             font-size: 1.5rem;
             font-weight: bold;
-            display: none; /* Escondido por padrão */
+            display: none; 
             animation: fadeIn 0.5s;
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* LISTAGEM */
         .card-numero { border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 15px; background: white;}
         .status-reservado { border-left: 6px solid #FFD700; }
         .status-pago { border-left: 6px solid var(--cor-roxo); }
@@ -251,7 +250,6 @@
             }
         }
 
-        // --- LÓGICA DE SORTEIO ---
         window.realizarSorteio = async () => {
             const pagos = todasReservas.filter(r => r.status === 'pago');
             if(pagos.length === 0) {

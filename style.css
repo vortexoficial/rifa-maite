@@ -15,7 +15,6 @@ body {
     text-align: center; color: var(--cor-preto);
 }
 
-/* ÍCONES E LOADER */
 .material-icons-round { vertical-align: middle; user-select: none; }
 .icon-purple { color: var(--cor-roxo-escuro); }
 .icon-light-purple { color: var(--cor-roxo-medio); }
@@ -35,44 +34,75 @@ body {
     filter: drop-shadow(0 0 5px rgba(220, 208, 255, 0.8));
 }
 
-/* --- TELA DE SORTEIO --- */
+/* --- TELA DE SORTEIO (NOVO DESIGN COM BLUR) --- */
 .overlay-sorteio {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle, #6a1b9a 0%, #3a0066 100%);
-    z-index: 10000; flex-direction: column; justify-content: center; align-items: center; color: white;
+    display: none; 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    
+    /* FUNDO DESFOCADO (Efeito Glass) */
+    background: rgba(40, 0, 70, 0.85); /* Roxo escuro translúcido */
+    backdrop-filter: blur(8px); /* Desfoque real */
+    -webkit-backdrop-filter: blur(8px);
+    
+    z-index: 10000; flex-direction: column; justify-content: center; align-items: center; 
 }
-.conteudo-sorteio { text-align: center; position: relative; width: 100%;}
-.titulo-sorteio { 
-    font-size: 2rem; margin-bottom: 30px; letter-spacing: 2px;
-    display: flex; align-items: center; justify-content: center; gap: 15px;
-}
-.titulo-sorteio .material-icons-round { font-size: 1.5em; color: #FFD700; } /* Ícone Dourado */
 
-.icon-spin { animation: spin 2s infinite ease-in-out; }
-.icon-spin-reverse { animation: spin-reverse 2s infinite ease-in-out; }
-
-@keyframes spin { 0% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } 100% { transform: rotate(-10deg); } }
-@keyframes spin-reverse { 0% { transform: rotate(10deg); } 50% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
-
-.roleta-container {
-    font-size: 6rem; font-weight: 800; 
-    background: white; color: var(--cor-roxo-escuro);
-    width: 200px; height: 200px; line-height: 200px;
-    border-radius: 50%; margin: 0 auto;
-    box-shadow: 0 0 50px rgba(255,255,255,0.5);
-    border: 8px solid var(--cor-lilas-bebe);
+.popup-ganhador {
+    background: white;
+    width: 90%; max-width: 450px;
+    border-radius: 25px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    overflow: hidden;
+    position: relative;
+    z-index: 10001;
+    animation: zoomIn 0.5s ease-out;
+    border: 4px solid var(--cor-lilas-bebe);
 }
-.msg-ganhador { 
-    font-size: 1.5rem; margin-top: 30px; min-height: 50px; 
-    font-weight: bold; color: var(--cor-lilas-bebe);
-    opacity: 0; transition: opacity 1s;
+
+@keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.header-popup {
+    background: var(--cor-roxo-escuro);
+    color: white;
+    padding: 20px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: flex; justify-content: center; gap: 10px; align-items: center;
 }
+
+.body-popup { padding: 30px 20px; text-align: center; }
+
+.texto-parabens { color: #666; font-size: 1.1em; margin: 0; }
+.nome-destaque { color: var(--cor-roxo-escuro); font-size: 2rem; margin: 10px 0 20px 0; font-weight: 800; line-height: 1.2; text-transform: uppercase;}
+
+.roleta-wrapper {
+    background: #F8F5FF;
+    border: 2px dashed var(--cor-roxo-medio);
+    border-radius: 15px;
+    padding: 15px;
+    display: inline-block;
+    min-width: 200px;
+}
+.label-numero { display: block; font-size: 0.9em; color: #888; margin-bottom: 5px; letter-spacing: 2px;}
+.numero-gigante { font-size: 4rem; font-weight: 800; color: var(--cor-roxo-escuro); line-height: 1; }
+
+.footer-popup { background: #f0f0f0; padding: 15px; color: #666; font-size: 0.9em; }
+
+/* Animações dos ícones */
+.icon-spin { animation: spin 2s infinite ease-in-out; color: #FFD700; }
+.icon-spin-reverse { animation: spin-reverse 2s infinite ease-in-out; color: #FFD700; }
+
+@keyframes spin { 0% { transform: rotate(-15deg); } 50% { transform: rotate(15deg); } 100% { transform: rotate(-15deg); } }
+@keyframes spin-reverse { 0% { transform: rotate(15deg); } 50% { transform: rotate(-15deg); } 100% { transform: rotate(15deg); } }
+
+/* Confetes */
 .confete {
-    position: absolute; width: 10px; height: 10px;
+    position: absolute; width: 12px; height: 12px;
     background-color: #f00; animation: cair 3s linear infinite;
+    z-index: 9999;
 }
 @keyframes cair { to { transform: translateY(100vh) rotate(720deg); } }
-@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
 /* LAYOUT GERAL */
 .container {
@@ -95,7 +125,7 @@ body {
 .info-box h3 { display: flex; align-items: center; gap: 8px; margin-top: 0; color: var(--cor-roxo-escuro); }
 .info-box p { display: flex; align-items: center; gap: 8px; margin: 10px 0; }
 
-/* --- CONTAGEM REGRESSIVA (NOVO) --- */
+/* CONTAGEM REGRESSIVA */
 .countdown-box { margin: 20px 0; }
 .countdown-label { font-size: 0.9em; color: var(--cor-roxo-medio); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
 .countdown-grid { display: flex; justify-content: center; gap: 10px; }
@@ -107,7 +137,6 @@ body {
 }
 .time-number { font-size: 1.4em; font-weight: 800; line-height: 1; }
 .time-text { font-size: 0.7em; text-transform: uppercase; margin-top: 2px; opacity: 0.8; }
-
 
 .legenda { margin: 20px 0; display: flex; justify-content: center; gap: 10px; }
 .tag { padding: 5px 15px; border-radius: 20px; font-size: 0.8em; font-weight: 600; }

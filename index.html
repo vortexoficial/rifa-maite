@@ -21,18 +21,30 @@
     </div>
 
     <div id="tela-sorteio" class="overlay-sorteio">
-        <div class="conteudo-sorteio">
-            <h2 class="titulo-sorteio">
-                <span class="material-icons-round icon-spin">celebration</span> 
-                HORA DO SORTEIO 
+        <div class="popup-ganhador">
+            <div class="header-popup">
+                <span class="material-icons-round icon-spin">celebration</span>
+                SORTEIO REALIZADO!
                 <span class="material-icons-round icon-spin-reverse">celebration</span>
-            </h2>
-            <div class="roleta-container">
-                <span id="numero-sorteado">000</span>
             </div>
-            <p id="mensagem-ganhador" class="msg-ganhador"></p>
-            <div id="confetes"></div>
+            
+            <div class="body-popup">
+                <p class="texto-parabens">Parabéns ao ganhador(a):</p>
+                
+                <h2 id="nome-ganhador-sorteio" class="nome-destaque">...</h2>
+                
+                <div class="roleta-wrapper">
+                    <span class="label-numero">NÚMERO:</span>
+                    <div id="numero-sorteado" class="numero-gigante">000</div>
+                </div>
+            </div>
+            
+            <div class="footer-popup">
+                <p>Obrigado a todos que participaram! 💜</p>
+            </div>
         </div>
+        
+        <div id="confetes"></div>
     </div>
 
     <div class="container main-content">
@@ -149,14 +161,11 @@
                     setTimeout(() => { loader.style.display = 'none'; }, 500);
                 }
             }, 1500); 
-            
-            // INICIAR CONTAGEM REGRESSIVA
             iniciarContagem();
         };
 
-        // --- LÓGICA CONTAGEM REGRESSIVA ---
         function iniciarContagem() {
-            // Data do Sorteio: 20 de Abril de 2026
+            // DATA DO SORTEIO (20/04/2026)
             const dataSorteio = new Date("2026-04-20T00:00:00").getTime();
 
             const x = setInterval(function() {
@@ -189,7 +198,11 @@
             navigator.clipboard.writeText(chave).then(() => {
                 texto.innerText = "Chave Copiada!";
                 btn.style.backgroundColor = "#2ecc71"; 
-                setTimeout(() => { texto.innerText = "Copiar código pix"; btn.style.backgroundColor = ""; }, 2000);
+                
+                setTimeout(() => {
+                    texto.innerText = "Copiar código pix";
+                    btn.style.backgroundColor = ""; 
+                }, 2000);
             }).catch(() => alert("Copie manualmente: " + chave));
         }
     </script>

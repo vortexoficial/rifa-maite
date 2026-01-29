@@ -139,33 +139,50 @@ window.confirmarReserva = async () => {
     }
 }
 
-// --- LÓGICA DO SORTEIO (CLIENTE) ---
+// --- NOVA LÓGICA DO SORTEIO COM DESACELERAÇÃO ---
 onSnapshot(doc(db, "config_sorteio", "resultado"), (docSnap) => {
     if (docSnap.exists()) {
         const dados = docSnap.data();
         const overlay = document.getElementById('tela-sorteio');
         const numElemento = document.getElementById('numero-sorteado');
-        const msgElemento = document.getElementById('mensagem-ganhador');
+        const nomeElemento = document.getElementById('nome-ganhador-sorteio');
         
         if (dados.ganhador && dados.status === 'ativo') {
             fecharModais();
             overlay.style.display = 'flex';
-            msgElemento.style.opacity = '0';
             
-            let contador = 0;
-            const intervalo = setInterval(() => {
+            // Estado inicial da animação
+            nomeElemento.innerText = "...";
+            nomeElemento.style.opacity = "0.5";
+
+            // Lógica de "Girar Roleta" com desaceleração (Easing)
+            let velocidade = 50; // Velocidade inicial (ms)
+            let voltas = 0;
+            const maxVoltas = 40; // Total de trocas antes de parar
+
+            function girar() {
+                // Mostra número aleatório visual
                 const random = Math.floor(Math.random() * 120) + 1;
                 numElemento.innerText = random.toString().padStart(3, '0');
-                contador++;
                 
-                if(contador > 40) {
-                    clearInterval(intervalo);
+                voltas++;
+
+                if (voltas < maxVoltas) {
+                    // Aumenta o tempo a cada volta (efeito freio)
+                    velocidade += 5; 
+                    setTimeout(girar, velocidade);
+                } else {
+                    // PARAR NO GANHADOR OFICIAL
                     numElemento.innerText = dados.ganhador.toString().padStart(3, '0');
-                    msgElemento.innerText = `Parabéns ${dados.nomeGanhador || ''}!`;
-                    msgElemento.style.opacity = '1';
+                    nomeElemento.innerText = dados.nomeGanhador || 'Anônimo';
+                    nomeElemento.style.opacity = "1";
+                    
                     soltarConfetes();
                 }
-            }, 80);
+            }
+            
+            // Inicia o loop apenas na primeira vez que detecta ativo (opcional, mas o Firestore garante realtime)
+            girar();
             
         } else {
             overlay.style.display = 'none';
@@ -177,7 +194,7 @@ function soltarConfetes() {
     const cores = ['#FFD700', '#FFFFFF', '#DCD0FF', '#4B0082'];
     const container = document.getElementById('confetes');
     container.innerHTML = '';
-    for(let i=0; i<50; i++) {
+    for(let i=0; i<70; i++) {
         const confete = document.createElement('div');
         confete.classList.add('confete');
         confete.style.left = Math.random() * 100 + 'vw';
