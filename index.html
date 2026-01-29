@@ -77,7 +77,7 @@
                     Chave PIX (Celular):
                 </div>
                 
-                <div class="chave-pix-destaque">22992846915</div>
+                <div class="chave-pix-destaque">12 98857-0943</div>
                 
                 <button onclick="copiarPix()" class="btn-copiar-grande" id="btn-copiar">
                     <span class="material-icons-round">content_copy</span>
@@ -106,6 +106,7 @@
 
     <script>
         window.onload = function() {
+            // TEMPO DO LOADER ALTERADO PARA 1500ms (1.5 segundos)
             setTimeout(() => {
                 const loader = document.getElementById('loader');
                 if(loader) {
@@ -116,18 +117,18 @@
         };
 
         window.copiarPix = function() {
-            const chave = "22992846915";
+            // NOVO NÚMERO PARA COPIAR (Sem formatação para funcionar no banco/app)
+            const chave = "12988570943";
             const btn = document.getElementById('btn-copiar');
             const texto = document.getElementById('texto-botao-copiar');
             
             navigator.clipboard.writeText(chave).then(() => {
-                // Feedback visual no botão
                 texto.innerText = "Chave Copiada!";
                 btn.style.backgroundColor = "#2ecc71"; // Verde
                 
                 setTimeout(() => {
                     texto.innerText = "Copiar código pix";
-                    btn.style.backgroundColor = ""; // Volta a cor original (roxo)
+                    btn.style.backgroundColor = ""; 
                 }, 2000);
             }).catch(() => alert("Copie manualmente: " + chave));
         }

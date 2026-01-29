@@ -91,7 +91,7 @@ body {
 .modal-content {
     background-color: #fff; padding: 25px; border-radius: 25px;
     width: 100%; max-width: 380px; position: relative; 
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3); border: 5px solid #DCD0FF; /* Borda grossa lilás claro opcional */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3); border: 5px solid #DCD0FF;
     animation: subir 0.3s ease-out;
     text-align: center;
 }
@@ -110,26 +110,20 @@ body {
     font-size: 1.5rem; font-weight: 800;
 }
 
-/* BOX OPÇÕES DE PAGAMENTO (Fundo Lilás) */
+/* BOX OPÇÕES DE PAGAMENTO */
 .box-pagamento {
-    background-color: #F8F5FF; /* Lilás bem clarinho */
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 15px;
+    background-color: #F8F5FF; border-radius: 15px;
+    padding: 20px; margin-bottom: 15px;
     display: flex; flex-direction: column; align-items: center;
 }
 .texto-pagamento-label { color: #666; font-size: 0.95em; margin-bottom: 5px; }
 .texto-premio { color: var(--cor-roxo-escuro); font-size: 1.2em; font-weight: 800; }
-
 .texto-ou { color: #333; margin: 15px 0; font-size: 0.95em; }
 
-/* BOX PIX (Borda Pontilhada) */
+/* BOX PIX */
 .box-pix {
-    border: 2px dashed #9370DB; /* Roxo médio pontilhado */
-    border-radius: 15px;
-    padding: 15px;
-    margin-bottom: 20px;
-    background-color: #fff;
+    border: 2px dashed #9370DB; border-radius: 15px;
+    padding: 15px; margin-bottom: 20px; background-color: #fff;
 }
 .label-pix { 
     display: flex; justify-content: center; align-items: center; gap: 6px;
@@ -138,14 +132,12 @@ body {
 .chave-pix-destaque {
     font-size: 1.6em; font-weight: 800; color: #1A1A1A; margin-bottom: 12px; user-select: all;
 }
-/* Botão Copiar Grande (Roxo) */
 .btn-copiar-grande {
     background-color: var(--cor-roxo-escuro);
     color: white; width: 100%; padding: 12px; border-radius: 10px;
     border: none; font-weight: 600; font-size: 1em; cursor: pointer;
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    margin-top: 0; /* Override */
-    transition: background 0.3s;
+    margin-top: 0; transition: background 0.3s;
 }
 .btn-copiar-grande:hover { background-color: #3a0066; }
 
@@ -153,8 +145,7 @@ body {
 input { 
     width: 100%; padding: 14px; margin-bottom: 10px; 
     border: 1px solid #ddd; border-radius: 10px; 
-    box-sizing: border-box; font-size: 15px; background: #fafafa; 
-    outline: none;
+    box-sizing: border-box; font-size: 15px; background: #fafafa; outline: none;
 }
 input:focus { border-color: var(--cor-roxo-medio); }
 
