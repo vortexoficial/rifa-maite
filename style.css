@@ -82,7 +82,7 @@ body {
 .numero.reservado { background-color: var(--cor-reservado); color: #444; }
 .numero.pago { background-color: var(--cor-roxo-escuro); color: white; opacity: 0.9; cursor: default;}
 
-/* --- MODAL ESTILO UNNAMED.PNG --- */
+/* MODAL */
 .modal {
     display: none; position: fixed; z-index: 1000; left: 0; top: 0; 
     width: 100%; height: 100%; background-color: rgba(75, 0, 130, 0.5); 
@@ -149,6 +149,7 @@ input {
 }
 input:focus { border-color: var(--cor-roxo-medio); }
 
+/* ESTILO PADRÃO DOS BOTÕES ROXOS (Confirmar e Combinado) */
 .btn-confirmar {
     background-color: var(--cor-roxo-escuro); color: white; border: none; padding: 16px; 
     border-radius: 12px; cursor: pointer; width: 100%; font-size: 16px; font-weight: 800; margin-top: 10px; 

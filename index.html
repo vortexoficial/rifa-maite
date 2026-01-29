@@ -100,13 +100,12 @@
             <h2>Reserva Realizada!</h2>
             <p>O número <span id="sucesso-numero" class="destaque-numero"></span> é seu!</p>
             <p style="color: #666;">Envie o comprovante no WhatsApp.</p>
-            <button onclick="fecharModais()" style="background-color: var(--cor-roxo-escuro);">Combinado!</button>
+            <button onclick="fecharModais()" class="btn-confirmar">Combinado!</button>
         </div>
     </div>
 
     <script>
         window.onload = function() {
-            // TEMPO DO LOADER ALTERADO PARA 1500ms (1.5 segundos)
             setTimeout(() => {
                 const loader = document.getElementById('loader');
                 if(loader) {
@@ -117,7 +116,6 @@
         };
 
         window.copiarPix = function() {
-            // NOVO NÚMERO PARA COPIAR (Sem formatação para funcionar no banco/app)
             const chave = "12988570943";
             const btn = document.getElementById('btn-copiar');
             const texto = document.getElementById('texto-botao-copiar');
