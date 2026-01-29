@@ -9,87 +9,133 @@
     <style>
         :root {
             --cor-roxo: #4B0082;
+            --cor-roxo-escuro: #4B0082;
+            --cor-roxo-medio: #9370DB;
             --cor-lilas: #DCD0FF;
+            --cor-lilas-bebe: #DCD0FF;
             --cor-sucesso: #2ecc71;
+            --cor-branco: #FFFFFF;
         }
         body { background-color: #F3F0FF; font-family: 'Segoe UI', sans-serif; }
         
         .btn-primary { background-color: var(--cor-roxo); border-color: var(--cor-roxo); }
         .btn-primary:hover { background-color: #3a0066; border-color: #3a0066; }
+        .btn-outline-primary { color: var(--cor-roxo); border-color: var(--cor-roxo); }
+        .btn-outline-primary:hover, .btn-outline-primary.active { background-color: var(--cor-roxo); border-color: var(--cor-roxo); color: white; }
         
-        /* CARD SORTEIO PREMIUM */
-        .card-sorteio {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f0ff 100%);
-            border: 2px solid var(--cor-roxo);
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(75, 0, 130, 0.15);
-            overflow: hidden;
-            position: relative;
-            margin-bottom: 30px;
-        }
-        .header-sorteio {
-            background-color: var(--cor-roxo);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        .body-sorteio { padding: 30px; text-align: center; }
-        
-        .btn-sortear {
-            background-color: var(--cor-sucesso);
-            color: white;
-            font-size: 1.2rem;
-            font-weight: bold;
-            padding: 15px 40px;
-            border-radius: 50px;
-            border: none;
-            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: inline-flex; align-items: center; gap: 10px;
-        }
-        .btn-sortear:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.6);
-            background-color: #27ae60;
-            color: white;
-        }
-        
-        .btn-resetar {
-            margin-top: 15px;
-            color: #e74c3c;
-            border: 2px solid #e74c3c;
-            background: transparent;
-            border-radius: 50px;
-            padding: 8px 20px;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-        .btn-resetar:hover { background-color: #e74c3c; color: white; }
-
-        .resultado-box {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #d4edda;
-            color: #155724;
-            border-radius: 10px;
-            font-size: 1.5rem;
-            font-weight: bold;
+        /* --- ESTILOS DO POPUP DE SORTEIO (IGUAL AO SITE) --- */
+        .overlay-sorteio {
             display: none; 
-            animation: fadeIn 0.5s;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(40, 0, 70, 0.85);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            z-index: 10000; flex-direction: column; justify-content: center; align-items: center; 
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .popup-ganhador {
+            background: white; width: 90%; max-width: 450px;
+            border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            overflow: hidden; position: relative; z-index: 10001;
+            animation: zoomIn 0.5s ease-out; border: 4px solid var(--cor-lilas-bebe);
+            text-align: center;
+        }
+        @keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
+        .header-popup {
+            background: var(--cor-roxo-escuro); color: white; padding: 20px;
+            font-size: 1.5rem; font-weight: 800; text-transform: uppercase;
+            display: flex; justify-content: center; gap: 10px; align-items: center;
+        }
+        .body-popup { padding: 30px 20px; text-align: center; }
+        .texto-parabens { color: #666; font-size: 1.1em; margin: 0; }
+        .nome-destaque { color: var(--cor-roxo-escuro); font-size: 2rem; margin: 10px 0 20px 0; font-weight: 800; line-height: 1.2; text-transform: uppercase;}
+        
+        .roleta-wrapper {
+            background: #F8F5FF; border: 2px dashed var(--cor-roxo-medio);
+            border-radius: 15px; padding: 15px; display: inline-block; min-width: 200px;
+        }
+        .label-numero { display: block; font-size: 0.9em; color: #888; margin-bottom: 5px; letter-spacing: 2px;}
+        .numero-gigante { font-size: 4rem; font-weight: 800; color: var(--cor-roxo-escuro); line-height: 1; }
+        .footer-popup { background: #f0f0f0; padding: 15px; color: #666; font-size: 0.9em; }
+
+        /* Animações */
+        .icon-spin { animation: spin 2s infinite ease-in-out; color: #FFD700; }
+        .icon-spin-reverse { animation: spin-reverse 2s infinite ease-in-out; color: #FFD700; }
+        @keyframes spin { 0% { transform: rotate(-15deg); } 50% { transform: rotate(15deg); } 100% { transform: rotate(-15deg); } }
+        @keyframes spin-reverse { 0% { transform: rotate(15deg); } 50% { transform: rotate(-15deg); } 100% { transform: rotate(15deg); } }
+
+        .confete {
+            position: absolute; width: 12px; height: 12px;
+            background-color: #f00; animation: cair 3s linear infinite; z-index: 9999;
+        }
+        @keyframes cair { to { transform: translateY(100vh) rotate(720deg); } }
+
+        /* Estilos do Painel Admin */
         .card-numero { border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 15px; background: white;}
         .status-reservado { border-left: 6px solid #FFD700; }
         .status-pago { border-left: 6px solid var(--cor-roxo); }
         .badge-numero { font-size: 1.5em; font-weight: bold; width: 60px; text-align: center; color: var(--cor-roxo); }
+        .btn-icon { display: flex; align-items: center; gap: 5px; }
+        .material-icons-round { font-size: 1.2em; vertical-align: middle; }
+        
+        .card-sorteio {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f0ff 100%);
+            border: 2px solid var(--cor-roxo); border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(75, 0, 130, 0.15); overflow: hidden; margin-bottom: 30px;
+        }
+        .header-sorteio {
+            background-color: var(--cor-roxo); color: white; padding: 15px;
+            text-align: center; font-weight: bold; font-size: 1.2rem; text-transform: uppercase;
+        }
+        .body-sorteio { padding: 30px; text-align: center; }
+        .btn-sortear {
+            background-color: var(--cor-sucesso); color: white; font-size: 1.2rem; font-weight: bold;
+            padding: 15px 40px; border-radius: 50px; border: none;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); transition: transform 0.2s;
+            display: inline-flex; align-items: center; gap: 10px;
+        }
+        .btn-sortear:hover { transform: translateY(-3px); background-color: #27ae60; color: white; }
+        
+        .btn-fechar-overlay {
+            margin-top: 10px; background: none; border: none; color: #555; text-decoration: underline; cursor: pointer;
+        }
+        
+        .btn-resetar {
+            margin-top: 15px; color: #e74c3c; border: 2px solid #e74c3c; background: transparent;
+            border-radius: 50px; padding: 8px 20px; font-weight: 600; transition: 0.2s;
+        }
+        .btn-resetar:hover { background-color: #e74c3c; color: white; }
     </style>
 </head>
 <body>
+
+    <div id="tela-sorteio" class="overlay-sorteio">
+        <div class="popup-ganhador">
+            <div class="header-popup">
+                <span class="material-icons-round icon-spin">celebration</span>
+                SORTEIO REALIZADO!
+                <span class="material-icons-round icon-spin-reverse">celebration</span>
+            </div>
+            
+            <div class="body-popup">
+                <p class="texto-parabens">Parabéns ao ganhador(a):</p>
+                
+                <h2 id="nome-ganhador-sorteio" class="nome-destaque">...</h2>
+                
+                <div class="roleta-wrapper">
+                    <span class="label-numero">NÚMERO:</span>
+                    <div id="numero-sorteado" class="numero-gigante">000</div>
+                </div>
+                
+                <br>
+                <button onclick="fecharOverlayAdmin()" class="btn-fechar-overlay">Fechar Visualização</button>
+            </div>
+            
+            <div class="footer-popup">
+                <p>Resultado exibido para todos os usuários! 💜</p>
+            </div>
+        </div>
+        <div id="confetes"></div>
+    </div>
 
     <div id="login-screen" class="container mt-5" style="max-width: 400px;">
         <div class="card p-4 text-center shadow-sm border-0">
@@ -112,15 +158,13 @@
             <div class="body-sorteio">
                 <p class="text-muted mb-4">
                     Clique no botão abaixo para sortear aleatoriamente um número entre os <strong>Pagos</strong>.<br>
-                    Isso ativará a animação na tela de todos os participantes.
+                    Isso ativará a animação na tela de todos os participantes (e aqui também).
                 </p>
                 
                 <button onclick="realizarSorteio()" class="btn-sortear">
                     <span class="material-icons-round">play_circle_filled</span>
                     SORTEAR AGORA
                 </button>
-                
-                <div id="resultado-admin" class="resultado-box"></div>
                 
                 <div class="mt-3">
                     <button onclick="resetarSorteio()" class="btn-resetar">
@@ -250,17 +294,22 @@
             }
         }
 
+        // --- LÓGICA DE SORTEIO (AGORA COM ANIMAÇÃO NO ADMIN) ---
         window.realizarSorteio = async () => {
             const pagos = todasReservas.filter(r => r.status === 'pago');
+            
             if(pagos.length === 0) {
                 alert("Nenhum número pago encontrado para sortear!");
                 return;
             }
+
             if(!confirm(`Existem ${pagos.length} números pagos. Sortear agora?`)) return;
 
+            // 1. Escolhe o ganhador
             const indice = Math.floor(Math.random() * pagos.length);
             const ganhador = pagos[indice];
 
+            // 2. Salva no Firebase (todos os clientes verão a animação)
             await setDoc(doc(db, "config_sorteio", "resultado"), {
                 ganhador: ganhador.id,
                 nomeGanhador: ganhador.nome,
@@ -268,15 +317,66 @@
                 data: new Date().toISOString()
             });
 
-            const box = document.getElementById('resultado-admin');
-            box.innerHTML = `🏆 Ganhador: #${ganhador.id} - ${ganhador.nome}`;
-            box.style.display = 'block';
+            // 3. Dispara a animação localmente no Admin
+            iniciarAnimacaoAdmin(ganhador);
+        }
+
+        function iniciarAnimacaoAdmin(dadosGanhador) {
+             const overlay = document.getElementById('tela-sorteio');
+             const numElemento = document.getElementById('numero-sorteado');
+             const nomeElemento = document.getElementById('nome-ganhador-sorteio');
+             
+             overlay.style.display = 'flex';
+             nomeElemento.innerText = "...";
+             nomeElemento.style.opacity = "0.5";
+
+             // Lógica de desaceleração (Easing)
+             let velocidade = 50; 
+             let voltas = 0;
+             const maxVoltas = 40; 
+
+             function girar() {
+                const random = Math.floor(Math.random() * 120) + 1;
+                numElemento.innerText = random.toString().padStart(3, '0');
+                
+                voltas++;
+
+                if(voltas < maxVoltas) {
+                    velocidade += 5; // Aumenta o tempo (fica mais lento)
+                    setTimeout(girar, velocidade);
+                } else {
+                    // Resultado Final
+                    numElemento.innerText = dadosGanhador.id.toString().padStart(3, '0');
+                    nomeElemento.innerText = dadosGanhador.nome;
+                    nomeElemento.style.opacity = "1";
+                    soltarConfetes();
+                }
+             }
+             girar();
+        }
+
+        window.fecharOverlayAdmin = () => {
+            document.getElementById('tela-sorteio').style.display = 'none';
         }
 
         window.resetarSorteio = async () => {
-            if(confirm("Isso vai fechar a tela de sorteio para todos. Continuar?")) {
+            if(confirm("Isso vai fechar a tela de sorteio para todos os usuários. Continuar?")) {
                 await setDoc(doc(db, "config_sorteio", "resultado"), { status: 'inativo' });
-                document.getElementById('resultado-admin').style.display = 'none';
+                fecharOverlayAdmin();
+            }
+        }
+
+        function soltarConfetes() {
+            const cores = ['#FFD700', '#FFFFFF', '#DCD0FF', '#4B0082'];
+            const container = document.getElementById('confetes');
+            container.innerHTML = '';
+            for(let i=0; i<70; i++) {
+                const confete = document.createElement('div');
+                confete.classList.add('confete');
+                confete.style.left = Math.random() * 100 + 'vw';
+                confete.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confete.style.backgroundColor = cores[Math.floor(Math.random() * cores.length)];
+                container.appendChild(confete);
             }
         }
     </script>
