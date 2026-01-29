@@ -3,50 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Admin - Nicollas</title>
+    <title>Admin - Chá Rifa Isis Maitê</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background-color: #f4f6f9; }
-        .card-numero { border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 15px; transition: transform 0.2s;}
-        .card-numero:hover { transform: translateY(-2px); }
-        .status-reservado { border-left: 5px solid #f1c40f; }
-        .status-pago { border-left: 5px solid #2ecc71; }
-        .badge-numero { font-size: 1.5em; font-weight: bold; width: 60px; text-align: center; }
-        .btn-zap { background-color: #25D366; color: white; border: none; }
-        .btn-zap:hover { background-color: #1ebc57; color: white; }
+        :root {
+            --cor-roxo: #4B0082;
+            --cor-lilas: #DCD0FF;
+        }
+        body { background-color: #F3F0FF; font-family: 'Segoe UI', sans-serif; }
+        
+        /* Customizando Bootstrap para o tema */
+        .btn-primary { background-color: var(--cor-roxo); border-color: var(--cor-roxo); }
+        .btn-primary:hover { background-color: #3a0066; border-color: #3a0066; }
+        .btn-outline-primary { color: var(--cor-roxo); border-color: var(--cor-roxo); }
+        .btn-outline-primary:hover, .btn-outline-primary.active { background-color: var(--cor-roxo); border-color: var(--cor-roxo); color: white; }
+        
+        .card-numero { border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 15px; background: white;}
+        .status-reservado { border-left: 6px solid #FFD700; }
+        .status-pago { border-left: 6px solid var(--cor-roxo); }
+        
+        .badge-numero { font-size: 1.5em; font-weight: bold; width: 60px; text-align: center; color: var(--cor-roxo); }
+        h2, h3 { color: var(--cor-roxo); }
     </style>
 </head>
 <body>
 
     <div id="login-screen" class="container mt-5" style="max-width: 400px;">
-        <div class="card p-4 text-center shadow-sm">
-            <h3 class="mb-4">🔒 Área Restrita</h3>
-            <input type="password" id="senha" class="form-control mb-3" placeholder="Senha de admin">
-            <button onclick="verificarSenha()" class="btn btn-primary w-100">Entrar no Painel</button>
+        <div class="card p-4 text-center shadow-sm border-0">
+            <h3 class="mb-4">🔒 Admin Isis Maitê</h3>
+            <input type="password" id="senha" class="form-control mb-3" placeholder="Senha">
+            <button onclick="verificarSenha()" class="btn btn-primary w-100">Acessar</button>
         </div>
     </div>
 
     <div id="painel" class="container mt-4" style="display: none;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Gestão da Rifa</h2>
-            <span class="badge bg-secondary" id="total-vendidos">0 vendidos</span>
+            <h2>Gestão Chá Rifa</h2>
+            <span class="badge bg-dark" id="total-vendidos">Carregando...</span>
         </div>
 
-        <div class="btn-group mb-4 w-100">
+        <div class="btn-group mb-4 w-100 shadow-sm">
             <button class="btn btn-outline-primary active" onclick="filtrar('todos')">Todos</button>
             <button class="btn btn-outline-warning" onclick="filtrar('reservado')">Pendentes</button>
             <button class="btn btn-outline-success" onclick="filtrar('pago')">Pagos</button>
         </div>
 
         <div id="lista-reservas" class="row">
-            <p class="text-center text-muted">Carregando reservas...</p>
+            <p class="text-center text-muted">Buscando dados...</p>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getFirestore, collection, query, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
+        // MANTENHA A CONFIGURAÇÃO IGUAL AO SEU PROJETO ATUAL
         const firebaseConfig = {
             apiKey: "AIzaSyACBB_r8sPsXaIy7L9k2CkMd2rwk3wUrYc",
             authDomain: "rifa-7c72f.firebaseapp.com",
@@ -59,9 +70,9 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- AUTENTICAÇÃO SIMPLES ---
+        // --- SENHA SIMPLES (ALTERE SE DESEJAR) ---
         window.verificarSenha = () => {
-            if(document.getElementById('senha').value === "nicollas10") {
+            if(document.getElementById('senha').value === "isis2026") { // Nova senha sugerida
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('painel').style.display = 'block';
                 iniciarApp();
@@ -71,7 +82,6 @@
         let todasReservas = [];
 
         function iniciarApp() {
-            // Pega tudo que não é 'livre' (ou seja, reservado ou pago)
             const q = query(collection(db, "rifa")); 
             
             onSnapshot(q, (snapshot) => {
@@ -80,16 +90,16 @@
                 
                 snapshot.forEach((doc) => {
                     const data = doc.data();
-                    if(data.status !== 'livre') {
+                    // Filtra apenas números válidos (1 a 120) se houver lixo no banco
+                    if(parseInt(doc.id) <= 120 && data.status !== 'livre') {
                         todasReservas.push({ id: doc.id, ...data });
                         if(data.status === 'pago') totalPagos++;
                     }
                 });
 
-                // Ordena por número
                 todasReservas.sort((a, b) => parseInt(a.id) - parseInt(b.id));
                 
-                document.getElementById('total-vendidos').innerText = `${totalPagos} pagos / ${todasReservas.length} reservados`;
+                document.getElementById('total-vendidos').innerText = `${totalPagos} Pagos / ${todasReservas.length} Reservados`;
                 renderizarLista(todasReservas);
             });
         }
@@ -99,14 +109,14 @@
             container.innerHTML = '';
 
             if(lista.length === 0) {
-                container.innerHTML = '<div class="col-12 text-center text-muted">Nenhum registro encontrado.</div>';
+                container.innerHTML = '<div class="col-12 text-center text-muted mt-5">Nenhum número reservado no momento.</div>';
                 return;
             }
 
             lista.forEach(item => {
                 const isPago = item.status === 'pago';
                 const statusClass = isPago ? 'status-pago' : 'status-reservado';
-                const statusTexto = isPago ? 'PAGO' : 'AGUARDANDO PIX';
+                const statusTexto = isPago ? 'CONFIRMADO' : 'AGUARDANDO';
                 const zapNumeros = item.telefone.replace(/\D/g, '');
 
                 const html = `
@@ -114,8 +124,8 @@
                     <div class="card card-numero ${statusClass} p-3">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <span class="badge-numero text-primary">#${item.id.padStart(3, '0')}</span>
-                                <h5 class="mt-2 mb-0">${item.nome}</h5>
+                                <span class="badge-numero">#${item.id.padStart(3, '0')}</span>
+                                <h5 class="mt-2 mb-0 fw-bold">${item.nome}</h5>
                                 <a href="https://wa.me/55${zapNumeros}" target="_blank" class="text-decoration-none text-muted small">
                                     📱 ${item.telefone}
                                 </a>
@@ -127,17 +137,17 @@
                             <div class="d-flex flex-column gap-2">
                                 ${!isPago ? `
                                     <button onclick="mudarStatus('${item.id}', 'pago')" class="btn btn-sm btn-success">
-                                        ✅ Confirmar
+                                        ✅ Baixa
                                     </button>
                                     <button onclick="liberarNumero('${item.id}')" class="btn btn-sm btn-outline-danger">
-                                        🗑️ Liberar
+                                        ♻️ Liberar
                                     </button>
                                 ` : `
-                                    <button onclick="mudarStatus('${item.id}', 'reservado')" class="btn btn-sm btn-outline-warning">
-                                        ↩️ Corrigir
+                                    <button onclick="mudarStatus('${item.id}', 'reservado')" class="btn btn-sm btn-outline-secondary">
+                                        ↩️ Voltar
                                     </button>
                                     <button onclick="liberarNumero('${item.id}')" class="btn btn-sm btn-outline-danger">
-                                        🗑️ Liberar
+                                        🗑️ Excluir
                                     </button>
                                 `}
                             </div>
@@ -154,20 +164,14 @@
             else renderizarLista(todasReservas.filter(i => i.status === tipo));
         }
 
-        // AÇÕES DO ADMIN
         window.mudarStatus = async (id, novoStatus) => {
-            if(confirm(`Mudar o número ${id} para ${novoStatus.toUpperCase()}?`)) {
+            if(confirm(`Alterar status do número ${id}?`)) {
                 await updateDoc(doc(db, "rifa", id), { status: novoStatus });
             }
         }
 
         window.liberarNumero = async (id) => {
-            if(confirm(`Tem certeza? O número ${id} voltará a ficar LIVRE para compra.`)) {
-                // Opção A: Deletar o documento (mais limpo)
-                // await deleteDoc(doc(db, "rifa", id)); 
-                
-                // Opção B: Marcar como livre (mais seguro se quiser guardar histórico, mas exige ajuste no site)
-                // Vamos usar Opção C: Atualizar status para 'livre' para limpar visualmente
+            if(confirm(`Tem certeza? O número ${id} voltará a ficar LIVRE.`)) {
                 await updateDoc(doc(db, "rifa", id), { 
                     status: 'livre', 
                     nome: '', 

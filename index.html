@@ -3,21 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rifa do Nicollas</title>
+    <title>Chá Rifa da Isis Maitê</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <div id="loader">
+        <div class="loader-content">
+            <span class="loader-top">CHÁ RIFA</span>
+            <div class="heart">💜</div>
+            <span class="loader-bottom">DA ÍSIS MAITÊ</span>
+        </div>
+    </div>
+
     <div class="container main-content">
-        <h1>💙 Rifa para o Tratamento do Nicollas</h1>
+        <header>
+            <h1 class="titulo-principal">Chá Rifa da Isis Maitê</h1>
+            <p class="subtitulo">Participe e concorra a prêmios incríveis!</p>
+        </header>
         
         <div class="foto-container">
-            <img src="image.png"  alt="Foto do Nicollas" class="foto-nicollas">
+            <img src="image.png" alt="Chá Rifa Isis Maitê" class="foto-destaque">
         </div>
 
-        <p style="font-size: 1.2em; margin: 15px 0;">
-            Ajudem o Nicollas! Cada número custa apenas <strong>R$ 10,00</strong>.
-        </p>
+        <div class="info-box">
+            <h3>🎁 Prêmios</h3>
+            <p><strong>1º Lugar:</strong> R$ 150,00</p>
+            <p><strong>2º Lugar:</strong> R$ 100,00</p>
+            <hr>
+            <p><strong>📅 Sorteio:</strong> 20/04/2026</p>
+            <p style="font-size: 0.9em; color: #666;">Entrega das fraldas até: 15/04/2026</p>
+            <hr>
+            <p class="valor-destaque">Valor: R$ 30,00 (Pix)<br><span>ou 1 Pacote de Fralda + Mimo</span></p>
+        </div>
         
         <div class="legenda">
             <span class="tag livre">Livre</span>
@@ -27,18 +46,21 @@
 
         <div id="grid-rifa" class="grid-rifa"></div>
         
-        <footer style="margin-top: 40px; color: #ccc;">
-            <a href="admin.html" style="color: #eee; text-decoration: none; font-size: 0.8em;">Área do Admin</a>
+        <footer style="margin-top: 40px; color: #888;">
+            <p>Feito com carinho 💜</p>
+            <a href="admin.html" style="color: #ccc; text-decoration: none; font-size: 0.8em;">Área do Admin</a>
         </footer>
     </div>
 
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="fecharModais()">&times;</span>
-            <h2>Reservar nº <span id="num-selecionado" style="color: #0056b3;"></span></h2>
+            <h2 class="titulo-modal">Número <span id="num-selecionado"></span></h2>
             
-            <p style="font-size: 1.1em; font-weight: bold; color: #444;">Valor: R$ 10,00</p>
-            <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">Para garantir, faça o PIX e envie o comprovante.</p>
+            <div class="info-reserva">
+                <p class="destaque-fralda">Este número equivale a:<br><strong id="tipo-fralda"></strong></p>
+                <p>ou <strong>R$ 30,00 no PIX</strong></p>
+            </div>
             
             <div class="pix-area">
                 <small>Chave PIX (Celular):</small><br>
@@ -46,21 +68,34 @@
             </div>
             
             <input type="text" id="nome" placeholder="Seu Nome Completo">
-            <input type="tel" id="telefone" placeholder="Seu WhatsApp (DDD) 99999-9999" maxlength="15">
+            <input type="tel" id="telefone" placeholder="WhatsApp (DDD) 99999-9999" maxlength="15">
             
-            <button onclick="confirmarReserva()">Confirmar Reserva</button>
+            <button onclick="confirmarReserva()" class="btn-confirmar">Confirmar Reserva 💜</button>
         </div>
     </div>
 
     <div id="modal-sucesso" class="modal">
         <div class="modal-content modal-sucesso" style="text-align: center;">
-            <span class="icone">✅</span>
+            <div class="pulse-icon">💜</div>
             <h2>Reserva Realizada!</h2>
-            <p>O número <span id="sucesso-numero" class="destaque-numero"></span> está reservado para você.</p>
-            <p style="color: #666;">Agora envie o comprovante no WhatsApp para validarmos.</p>
-            <button onclick="fecharModais()" style="background-color: #2ecc71;">Entendido!</button>
+            <p>O número <span id="sucesso-numero" class="destaque-numero"></span> é seu!</p>
+            <p style="color: #666;">Envie o comprovante ou combine a entrega da fralda pelo WhatsApp.</p>
+            <button onclick="fecharModais()" style="background-color: var(--cor-roxo-escuro);">Combinado!</button>
         </div>
     </div>
+
+  <script>
+        window.onload = function() {
+            // Tempo reduzido para 800ms (0.8 segundos)
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                if(loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => { loader.style.display = 'none'; }, 500); // Tempo para o efeito de "sumir" suavemente
+                }
+            }, 1500); 
+        };
+    </script>
 
     <script type="module" src="script.js"></script>
 </body>

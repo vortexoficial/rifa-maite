@@ -1,117 +1,145 @@
 :root {
-    --cor-livre: #2ecc71;
-    --cor-reservado: #f1c40f;
-    --cor-pago: #e74c3c;
-    --cor-fundo: #f0f2f5;
-    --cor-azul-titulo: #0056b3;
+    /* Paleta Chá Rifa Isis Maitê */
+    --cor-lilas-bebe: #DCD0FF; /* Fundo suave / Livre */
+    --cor-roxo-escuro: #4B0082; /* Títulos / Botões / Pago */
+    --cor-roxo-medio: #9370DB; /* Detalhes */
+    --cor-branco: #FFFFFF;
+    --cor-preto: #1A1A1A;
+    --cor-reservado: #FFD700; /* Dourado para atenção/reservado */
+    
+    --bg-body: #F3F0FF; /* Lilás bem clarinho pro fundo da página */
 }
 
 body {
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--cor-fundo);
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-body);
     margin: 0;
-    padding: 20px 10px;
+    padding: 0; /* Loader cobre tudo */
     text-align: center;
-    color: #333;
+    color: var(--cor-preto);
 }
 
-h1 { color: var(--cor-azul-titulo); margin-bottom: 10px; }
+/* --- LOADER --- */
+#loader {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: var(--cor-branco);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+}
 
+.loader-content { display: flex; flex-direction: column; align-items: center; }
+.loader-top { font-size: 1.2rem; letter-spacing: 3px; color: var(--cor-roxo-medio); margin-bottom: -5px;}
+.loader-bottom { font-size: 2.5rem; font-weight: 800; color: var(--cor-roxo-escuro); text-transform: uppercase; }
+.heart {
+    font-size: 3rem;
+    margin: 10px 0;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* --- LAYOUT PRINCIPAL --- */
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    background: white;
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin: 20px auto;
+    background: var(--cor-branco);
+    padding: 30px 20px;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(75, 0, 130, 0.1);
 }
 
-.foto-container { margin: 20px auto; max-width: 100%; }
-.foto-nicollas {
-    width: 100%; max-width: 500px; height: auto;
-    border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    border: 3px solid white;
+.titulo-principal { color: var(--cor-roxo-escuro); font-weight: 800; margin-bottom: 5px; }
+.subtitulo { color: var(--cor-roxo-medio); margin-top: 0; font-weight: 300; }
+
+.foto-container { margin: 20px auto; }
+.foto-destaque {
+    width: 100%; max-width: 300px; height: auto;
+    border-radius: 50%; /* Foto redonda fica charmoso para chá de bebê */
+    border: 5px solid var(--cor-lilas-bebe);
+    padding: 5px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
+
+.info-box {
+    background-color: #FAFAFF;
+    border: 2px dashed var(--cor-lilas-bebe);
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+.valor-destaque { font-size: 1.1em; color: var(--cor-roxo-escuro); font-weight: bold; }
+.valor-destaque span { font-size: 0.9em; color: var(--cor-preto); font-weight: normal;}
 
 /* Legenda e Grid */
-.legenda { margin: 20px 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-.tag { padding: 5px 15px; border-radius: 20px; font-size: 0.85em; color: white; font-weight: 500; }
-.livre { background-color: var(--cor-livre); }
-.reservado { background-color: var(--cor-reservado); color: #4a4a4a; }
-.pago { background-color: var(--cor-pago); }
+.legenda { margin: 20px 0; display: flex; justify-content: center; gap: 10px; }
+.tag { padding: 5px 15px; border-radius: 20px; font-size: 0.8em; font-weight: 600; }
+.livre { background-color: var(--cor-lilas-bebe); color: var(--cor-roxo-escuro); }
+.reservado { background-color: var(--cor-reservado); color: #555; }
+.pago { background-color: var(--cor-roxo-escuro); color: white; }
 
 .grid-rifa {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
-    gap: 8px; padding: 10px;
-    background: #f8f9fa; border-radius: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+    gap: 10px; padding: 10px;
 }
 
 .numero {
-    background-color: var(--cor-livre); color: white;
-    padding: 12px 0; border-radius: 10px;
-    font-weight: bold; font-size: 1.1em; cursor: pointer;
-    transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: var(--cor-lilas-bebe); 
+    color: var(--cor-roxo-escuro);
+    padding: 15px 0; 
+    border-radius: 12px;
+    font-weight: bold; 
+    font-size: 1.1em; 
+    cursor: pointer;
+    transition: all 0.2s; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
-.numero:hover { transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-.numero.reservado { background-color: var(--cor-reservado); color: #4a4a4a; }
-.numero.pago { background-color: var(--cor-pago); cursor: default; opacity: 0.8; }
+.numero:hover { transform: translateY(-3px); background-color: #ccc0fa; }
 
-/* --- JANELAS (MODAIS) CORRIGIDAS --- */
+.numero.reservado { background-color: var(--cor-reservado); color: #444; }
+.numero.pago { background-color: var(--cor-roxo-escuro); color: white; opacity: 0.9; cursor: default;}
+
+/* --- MODAIS --- */
 .modal {
-    display: none; 
-    position: fixed; 
-    z-index: 100; 
-    left: 0; 
-    top: 0; 
-    width: 100%; 
-    height: 100%; 
-    background-color: rgba(0,0,0,0.6); 
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    
-    /* NOVA CENTRALIZAÇÃO COM FLEXBOX */
-    align-items: center;
-    justify-content: center;
-    padding: 20px; /* Espaço nas bordas da tela */
-    box-sizing: border-box;
+    display: none; position: fixed; z-index: 1000; left: 0; top: 0; 
+    width: 100%; height: 100%; 
+    background-color: rgba(75, 0, 130, 0.5); /* Fundo roxo translúcido */
+    backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;
 }
 
 .modal-content {
-    background-color: #fff; 
-    padding: 25px; 
-    border-radius: 20px;
-    width: 100%; 
-    max-width: 400px; 
-    position: relative; 
-    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+    background-color: #fff; padding: 30px; border-radius: 25px;
+    width: 100%; max-width: 380px; position: relative; 
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    border: 4px solid var(--cor-lilas-bebe);
     animation: subir 0.3s ease-out;
-    
-    /* GARANTE QUE NÃO CORTA EM TELA PEQUENA */
-    max-height: 90vh; /* Altura máxima de 90% da tela */
-    overflow-y: auto; /* Adiciona rolagem se o conteúdo for maior */
-    margin: auto; /* Centraliza no flex container */
 }
-
 @keyframes subir { from {transform: translateY(30px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
 
-.close { position: absolute; right: 20px; top: 15px; font-size: 28px; color: #aaa; cursor: pointer; z-index: 10; }
-.pix-area { background: #eef2f7; padding: 15px; border-radius: 10px; margin: 15px 0; border: 2px dashed #b8c2cc; color: #333; font-family: monospace;}
-input { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 16px; background: #fafafa;}
-button { background-color: var(--cor-azul-titulo); color: white; border: none; padding: 16px; border-radius: 10px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; margin-top: 15px; transition: background 0.2s;}
-button:hover { background-color: #004494; }
+.close { position: absolute; right: 20px; top: 15px; font-size: 30px; color: var(--cor-roxo-medio); cursor: pointer; }
+.titulo-modal { color: var(--cor-roxo-escuro); margin-top: 0;}
 
-/* Estilo do Sucesso */
-.modal-sucesso .icone { font-size: 60px; margin-bottom: 15px; display: block; }
-.modal-sucesso h2 { color: #2ecc71; margin-top: 0; }
-.destaque-numero { font-size: 2em; color: #333; font-weight: 800; display: block; margin: 10px 0; }
+.destaque-fralda { font-size: 1.1em; margin: 15px 0; padding: 10px; background: #F3F0FF; border-radius: 10px; color: var(--cor-roxo-escuro); }
 
-/* Ajuste Fino para Celulares Muito Pequenos */
-@media (max-width: 480px) {
-    .modal-content {
-        padding: 20px;
-        max-height: 95vh; /* Aproveita mais a tela */
-    }
-    .modal h2 { font-size: 1.4em; }
-    .pix-area strong { font-size: 1.1em; }
+.pix-area { background: #f9f9f9; padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px dashed var(--cor-roxo-medio); color: #333; }
+input { width: 100%; padding: 15px; margin: 8px 0; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 16px; background: #fafafa; outline-color: var(--cor-roxo-medio);}
+
+button { 
+    background-color: var(--cor-roxo-escuro); 
+    color: white; border: none; padding: 16px; 
+    border-radius: 12px; cursor: pointer; width: 100%; 
+    font-size: 16px; font-weight: bold; margin-top: 15px; 
+    transition: transform 0.2s;
 }
+button:hover { transform: scale(1.02); background-color: #3a0066;}
+
+.pulse-icon { font-size: 50px; animation: pulse 1.5s infinite; }
