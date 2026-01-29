@@ -46,7 +46,6 @@ function abrirModalSucesso(numero) {
     else tamanhoFralda = "tamanho G";
 
     const mensagem = `Parabéns você reservou o número <strong>${numero.toString().padStart(3, '0')}</strong>, realize o pagamento via pix e envie o comprovante via whatsapp ou entregue o pacote de fraldas <strong>${tamanhoFralda}</strong> até o dia 15 de Abril!`;
-
     document.getElementById('mensagem-sucesso').innerHTML = mensagem;
     document.getElementById('modal-sucesso').style.display = 'flex'; 
 }
@@ -140,7 +139,7 @@ window.confirmarReserva = async () => {
     }
 }
 
-// --- LÓGICA DO SORTEIO (ANIMAÇÃO) ---
+// --- LÓGICA DO SORTEIO (CLIENTE) ---
 onSnapshot(doc(db, "config_sorteio", "resultado"), (docSnap) => {
     if (docSnap.exists()) {
         const dados = docSnap.data();
@@ -178,7 +177,6 @@ function soltarConfetes() {
     const cores = ['#FFD700', '#FFFFFF', '#DCD0FF', '#4B0082'];
     const container = document.getElementById('confetes');
     container.innerHTML = '';
-    
     for(let i=0; i<50; i++) {
         const confete = document.createElement('div');
         confete.classList.add('confete');
@@ -188,5 +186,4 @@ function soltarConfetes() {
         container.appendChild(confete);
     }
 }
-
 criarGrid();

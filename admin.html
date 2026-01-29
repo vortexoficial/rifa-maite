@@ -10,23 +10,84 @@
         :root {
             --cor-roxo: #4B0082;
             --cor-lilas: #DCD0FF;
+            --cor-sucesso: #2ecc71;
         }
         body { background-color: #F3F0FF; font-family: 'Segoe UI', sans-serif; }
         
         .btn-primary { background-color: var(--cor-roxo); border-color: var(--cor-roxo); }
         .btn-primary:hover { background-color: #3a0066; border-color: #3a0066; }
-        .btn-outline-primary { color: var(--cor-roxo); border-color: var(--cor-roxo); }
-        .btn-outline-primary:hover, .btn-outline-primary.active { background-color: var(--cor-roxo); border-color: var(--cor-roxo); color: white; }
         
+        /* CARD SORTEIO PREMIUM */
+        .card-sorteio {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f0ff 100%);
+            border: 2px solid var(--cor-roxo);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(75, 0, 130, 0.15);
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        .header-sorteio {
+            background-color: var(--cor-roxo);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .body-sorteio { padding: 30px; text-align: center; }
+        
+        .btn-sortear {
+            background-color: var(--cor-sucesso);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 15px 40px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-flex; align-items: center; gap: 10px;
+        }
+        .btn-sortear:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.6);
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-resetar {
+            margin-top: 15px;
+            color: #e74c3c;
+            border: 2px solid #e74c3c;
+            background: transparent;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .btn-resetar:hover { background-color: #e74c3c; color: white; }
+
+        .resultado-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #d4edda;
+            color: #155724;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: none; /* Escondido por padrão */
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* LISTAGEM */
         .card-numero { border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 15px; background: white;}
         .status-reservado { border-left: 6px solid #FFD700; }
         .status-pago { border-left: 6px solid var(--cor-roxo); }
-        
         .badge-numero { font-size: 1.5em; font-weight: bold; width: 60px; text-align: center; color: var(--cor-roxo); }
-        h2, h3 { color: var(--cor-roxo); }
-
-        .btn-icon { display: flex; align-items: center; gap: 5px; }
-        .material-icons-round { font-size: 1.2em; vertical-align: middle; }
     </style>
 </head>
 <body>
@@ -43,15 +104,37 @@
     </div>
 
     <div id="painel" class="container mt-4" style="display: none;">
+        
+        <div class="card-sorteio">
+            <div class="header-sorteio">
+                <span class="material-icons-round" style="vertical-align: middle;">celebration</span>
+                Central de Sorteio Oficial
+            </div>
+            <div class="body-sorteio">
+                <p class="text-muted mb-4">
+                    Clique no botão abaixo para sortear aleatoriamente um número entre os <strong>Pagos</strong>.<br>
+                    Isso ativará a animação na tela de todos os participantes.
+                </p>
+                
+                <button onclick="realizarSorteio()" class="btn-sortear">
+                    <span class="material-icons-round">play_circle_filled</span>
+                    SORTEAR AGORA
+                </button>
+                
+                <div id="resultado-admin" class="resultado-box"></div>
+                
+                <div class="mt-3">
+                    <button onclick="resetarSorteio()" class="btn-resetar">
+                        <span class="material-icons-round" style="font-size: 1em; vertical-align: middle;">refresh</span>
+                        Resetar Tela / Novo Sorteio
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>
-                <span class="material-icons-round" style="font-size: 1.2em;">dashboard</span>
-                Gestão Chá Rifa
-            </h2>
-            <span class="badge bg-dark d-flex align-items-center gap-2" id="total-vendidos" style="padding: 10px;">
-                <span class="material-icons-round animation-spin" style="font-size: 1em;">sync</span>
-                Carregando...
-            </span>
+            <h3 style="color: var(--cor-roxo);">Gestão dos Números</h3>
+            <span class="badge bg-dark p-2" id="total-vendidos">Carregando...</span>
         </div>
 
         <div class="btn-group mb-4 w-100 shadow-sm">
@@ -67,7 +150,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getFirestore, collection, query, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getFirestore, collection, query, onSnapshot, doc, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyACBB_r8sPsXaIy7L9k2CkMd2rwk3wUrYc",
@@ -93,11 +176,9 @@
 
         function iniciarApp() {
             const q = query(collection(db, "rifa")); 
-            
             onSnapshot(q, (snapshot) => {
                 todasReservas = [];
                 let totalPagos = 0;
-                
                 snapshot.forEach((doc) => {
                     const data = doc.data();
                     if(parseInt(doc.id) <= 120 && data.status !== 'livre') {
@@ -105,13 +186,8 @@
                         if(data.status === 'pago') totalPagos++;
                     }
                 });
-
                 todasReservas.sort((a, b) => parseInt(a.id) - parseInt(b.id));
-                
-                document.getElementById('total-vendidos').innerHTML = `
-                    <span class="material-icons-round" style="font-size: 1em; color: lightgreen;">check_circle</span>
-                    ${totalPagos} Pagos / ${todasReservas.length} Reservados
-                `;
+                document.getElementById('total-vendidos').innerHTML = `${totalPagos} Pagos / ${todasReservas.length} Reservados`;
                 renderizarLista(todasReservas);
             });
         }
@@ -119,18 +195,15 @@
         window.renderizarLista = (lista) => {
             const container = document.getElementById('lista-reservas');
             container.innerHTML = '';
-
             if(lista.length === 0) {
                 container.innerHTML = '<div class="col-12 text-center text-muted mt-5">Nenhum número reservado no momento.</div>';
                 return;
             }
-
             lista.forEach(item => {
                 const isPago = item.status === 'pago';
                 const statusClass = isPago ? 'status-pago' : 'status-reservado';
                 const statusTexto = isPago ? 'CONFIRMADO' : 'AGUARDANDO';
                 const zapNumeros = item.telefone.replace(/\D/g, '');
-
                 const html = `
                 <div class="col-md-6 col-lg-4">
                     <div class="card card-numero ${statusClass} p-3">
@@ -145,28 +218,18 @@
                                     ${statusTexto}
                                 </div>
                             </div>
-                            
                             <div class="d-flex flex-column gap-2">
                                 ${!isPago ? `
-                                    <button onclick="mudarStatus('${item.id}', 'pago')" class="btn btn-sm btn-success btn-icon">
-                                        <span class="material-icons-round">check_circle</span> Baixa
-                                    </button>
-                                    <button onclick="liberarNumero('${item.id}')" class="btn btn-sm btn-outline-danger btn-icon">
-                                        <span class="material-icons-round">delete_outline</span> Liberar
-                                    </button>
+                                    <button onclick="mudarStatus('${item.id}', 'pago')" class="btn btn-sm btn-success d-flex align-items-center gap-1"><span class="material-icons-round">check</span> Baixa</button>
+                                    <button onclick="liberarNumero('${item.id}')" class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1"><span class="material-icons-round">delete</span> Liberar</button>
                                 ` : `
-                                    <button onclick="mudarStatus('${item.id}', 'reservado')" class="btn btn-sm btn-outline-secondary btn-icon">
-                                        <span class="material-icons-round">undo</span> Voltar
-                                    </button>
-                                    <button onclick="liberarNumero('${item.id}')" class="btn btn-sm btn-outline-danger btn-icon">
-                                        <span class="material-icons-round">delete</span> Excluir
-                                    </button>
+                                    <button onclick="mudarStatus('${item.id}', 'reservado')" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"><span class="material-icons-round">undo</span> Voltar</button>
+                                    <button onclick="liberarNumero('${item.id}')" class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1"><span class="material-icons-round">delete</span> Excluir</button>
                                 `}
                             </div>
                         </div>
                     </div>
-                </div>
-                `;
+                </div>`;
                 container.innerHTML += html;
             });
         }
@@ -184,11 +247,38 @@
 
         window.liberarNumero = async (id) => {
             if(confirm(`Tem certeza? O número ${id} voltará a ficar LIVRE.`)) {
-                await updateDoc(doc(db, "rifa", id), { 
-                    status: 'livre', 
-                    nome: '', 
-                    telefone: '' 
-                });
+                await updateDoc(doc(db, "rifa", id), { status: 'livre', nome: '', telefone: '' });
+            }
+        }
+
+        // --- LÓGICA DE SORTEIO ---
+        window.realizarSorteio = async () => {
+            const pagos = todasReservas.filter(r => r.status === 'pago');
+            if(pagos.length === 0) {
+                alert("Nenhum número pago encontrado para sortear!");
+                return;
+            }
+            if(!confirm(`Existem ${pagos.length} números pagos. Sortear agora?`)) return;
+
+            const indice = Math.floor(Math.random() * pagos.length);
+            const ganhador = pagos[indice];
+
+            await setDoc(doc(db, "config_sorteio", "resultado"), {
+                ganhador: ganhador.id,
+                nomeGanhador: ganhador.nome,
+                status: 'ativo',
+                data: new Date().toISOString()
+            });
+
+            const box = document.getElementById('resultado-admin');
+            box.innerHTML = `🏆 Ganhador: #${ganhador.id} - ${ganhador.nome}`;
+            box.style.display = 'block';
+        }
+
+        window.resetarSorteio = async () => {
+            if(confirm("Isso vai fechar a tela de sorteio para todos. Continuar?")) {
+                await setDoc(doc(db, "config_sorteio", "resultado"), { status: 'inativo' });
+                document.getElementById('resultado-admin').style.display = 'none';
             }
         }
     </script>
