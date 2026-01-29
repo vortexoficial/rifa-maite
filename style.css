@@ -149,7 +149,6 @@ input {
 }
 input:focus { border-color: var(--cor-roxo-medio); }
 
-/* ESTILO PADRÃO DOS BOTÕES ROXOS (Confirmar e Combinado) */
 .btn-confirmar {
     background-color: var(--cor-roxo-escuro); color: white; border: none; padding: 16px; 
     border-radius: 12px; cursor: pointer; width: 100%; font-size: 16px; font-weight: 800; margin-top: 10px; 

@@ -98,8 +98,9 @@
                 <span class="material-icons-round icon-purple pulse-animation" style="font-size: 4rem;">check_circle</span>
             </div>
             <h2>Reserva Realizada!</h2>
-            <p>O número <span id="sucesso-numero" class="destaque-numero"></span> é seu!</p>
-            <p style="color: #666;">Envie o comprovante no WhatsApp.</p>
+            
+            <p id="mensagem-sucesso" style="font-size: 1.1em; color: #444; margin: 20px 0; line-height: 1.5;"></p>
+            
             <button onclick="fecharModais()" class="btn-confirmar">Combinado!</button>
         </div>
     </div>
@@ -122,7 +123,7 @@
             
             navigator.clipboard.writeText(chave).then(() => {
                 texto.innerText = "Chave Copiada!";
-                btn.style.backgroundColor = "#2ecc71"; // Verde
+                btn.style.backgroundColor = "#2ecc71"; 
                 
                 setTimeout(() => {
                     texto.innerText = "Copiar código pix";

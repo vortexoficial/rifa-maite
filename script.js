@@ -50,7 +50,17 @@ window.fecharModais = () => {
 
 function abrirModalSucesso(numero) {
     fecharModais();
-    document.getElementById('sucesso-numero').innerText = numero.toString().padStart(3, '0');
+    
+    // Calcula o tamanho da fralda novamente para exibir na mensagem final
+    let tamanhoFralda = "";
+    if (numero <= 20) tamanhoFralda = "tamanho P";
+    else if (numero <= 90) tamanhoFralda = "tamanho M";
+    else tamanhoFralda = "tamanho G";
+
+    // Monta a mensagem personalizada solicitada
+    const mensagem = `Parabéns você reservou o número <strong>${numero.toString().padStart(3, '0')}</strong>, realize o pagamento via pix e envie o comprovante via whatsapp ou entregue o pacote de fraldas <strong>${tamanhoFralda}</strong> até o dia 15 de Abril!`;
+
+    document.getElementById('mensagem-sucesso').innerHTML = mensagem;
     document.getElementById('modal-sucesso').style.display = 'flex'; 
 }
 
